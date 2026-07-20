@@ -1,0 +1,24 @@
+generated: '2026-07-17'
+method: searched
+source: openapi/airspace-technologies-v2-openapi.json, openapi/airspace-technologies-v3-openapi.json
+docs: https://api.airspace.com/api-docs/v3
+summary:
+  types:
+  - http
+  api_key_in: [header]
+  oauth2_flows: []
+schemes:
+- name: Bearer
+  type: http
+  scheme: bearer
+  in: header
+  header: Authorization
+  description: 'Unique API key necessary to make API requests. Sent as Authorization: Bearer <API_KEY> header.'
+  sources:
+  - openapi/airspace-technologies-v2-openapi.json
+  - openapi/airspace-technologies-v3-openapi.json
+notes:
+- API tokens are provisioned by Airspace, not self-service. Contact integrations@airspace.com to request a key.
+- Once issued, a token does not expire.
+- New integrators are provisioned against the test environment (apitest.airspace.com) first; production access is enabled after end-to-end testing sign-off.
+- No OAuth2 scope surface; access is account-scoped by the issued bearer token.
