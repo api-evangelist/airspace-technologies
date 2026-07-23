@@ -1,0 +1,59 @@
+generated: '2026-07-17'
+method: derived
+status: candidate
+source: openapi/airspace-technologies-v3-openapi.json
+note: >-
+  Airspace publishes no official hosted/remote MCP server. This is a candidate tool
+  surface derived one-to-one from the V3 OpenAPI operations for potential agent access.
+server:
+  name: airspace-technologies
+  transport: http
+tools:
+- name: get_address_books
+  description: List saved address books.
+  source_operation: openapi/airspace-technologies-v3-openapi.json#getAddressBooks
+- name: get_orders
+  description: List orders.
+  source_operation: openapi/airspace-technologies-v3-openapi.json#getOrders
+- name: create_order
+  description: Create a new shipment order.
+  source_operation: openapi/airspace-technologies-v3-openapi.json#createOrder
+- name: get_order_by_id
+  description: Retrieve an order by tracking id.
+  source_operation: openapi/airspace-technologies-v3-openapi.json#getOrderById
+- name: update_order
+  description: Update an existing order.
+  source_operation: openapi/airspace-technologies-v3-openapi.json#updateOrder
+- name: delete_order
+  description: Cancel/delete an order.
+  source_operation: openapi/airspace-technologies-v3-openapi.json#deleteOrder
+- name: activate_order
+  description: Activate an order for fulfillment.
+  source_operation: openapi/airspace-technologies-v3-openapi.json#activateOrder
+- name: get_orders_events
+  description: Poll events across orders.
+  source_operation: openapi/airspace-technologies-v3-openapi.json#getOrdersEvents
+- name: get_events_for_order
+  description: Poll events for a single order.
+  source_operation: openapi/airspace-technologies-v3-openapi.json#getEventsForOrderById
+- name: create_quote
+  description: Generate a shipping quote.
+  source_operation: openapi/airspace-technologies-v3-openapi.json#createQuote
+- name: get_quote
+  description: Retrieve a quote by tracking id.
+  source_operation: openapi/airspace-technologies-v3-openapi.json#getQuote
+- name: create_will_call_order
+  description: Create a will-call order.
+  source_operation: openapi/airspace-technologies-v3-openapi.json#createWillCallOrder
+- name: update_will_call_order
+  description: Update a will-call order.
+  source_operation: openapi/airspace-technologies-v3-openapi.json#updateWillCallOrder
+- name: get_invoices
+  description: List invoices.
+  source_operation: openapi/airspace-technologies-v3-openapi.json#getInvoices
+- name: get_invoice_by_id
+  description: Retrieve an invoice by tracking id.
+  source_operation: openapi/airspace-technologies-v3-openapi.json#getInvoiceById
+- name: get_piece_libraries
+  description: List reusable piece libraries.
+  source_operation: openapi/airspace-technologies-v3-openapi.json#getPieceLibraries

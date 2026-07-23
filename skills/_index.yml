@@ -1,0 +1,16 @@
+generated: '2026-07-17'
+method: generated
+source: openapi/airspace-technologies-v3-openapi.json
+skills:
+- file: airspace-technologies-create-and-track-order.md
+  name: Create and track a shipment order
+  api: openapi/airspace-technologies-v3-openapi.json
+  operations: [createOrder, activateOrder, getOrderById, getEventsForOrderById]
+- file: airspace-technologies-generate-quote.md
+  name: Generate a shipping quote
+  api: openapi/airspace-technologies-v3-openapi.json
+  operations: [createQuote, getQuote]
+- file: airspace-technologies-monitor-shipments.md
+  name: Monitor active shipments
+  api: openapi/airspace-technologies-v3-openapi.json
+  operations: [getOrders, getOrdersEvents, getEventsForOrderById]

@@ -1,0 +1,24 @@
+{
+  "provider": "airspace-technologies",
+  "sources": [
+    "airspace-technologies-address-books-api-openapi.yml",
+    "airspace-technologies-invoices-api-openapi.yml",
+    "airspace-technologies-labels-api-openapi.yml",
+    "airspace-technologies-orders-api-openapi.yml",
+    "airspace-technologies-piece-libraries-api-openapi.yml",
+    "airspace-technologies-quotes-api-openapi.yml"
+  ],
+  "outputs": [
+    "airspace-technologies-address-books-api-openapi.yml",
+    "airspace-technologies-invoices-api-openapi.yml",
+    "airspace-technologies-labels-api-openapi.yml",
+    "airspace-technologies-orders-api-openapi.yml",
+    "airspace-technologies-piece-libraries-api-openapi.yml",
+    "airspace-technologies-quotes-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

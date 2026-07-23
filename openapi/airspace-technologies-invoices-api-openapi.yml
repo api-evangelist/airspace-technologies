@@ -1,0 +1,391 @@
+openapi: 3.0.1
+info:
+  title: Airspace API Documentation Address Books Invoices API
+  description: "# Introduction\nAirspace's V2 API is a RESTful API. Our API accepts JSON-encoded request bodies, returns JSON-encoded\nresponses, and uses standard HTTP response codes, authentication, and verbs. With this API you can build\nintegrations for Order Creation, Quote Generation, Label Generation, and Active Shipment Monitoring.\n## Getting started with the Airspace API\n1. Check with your Airspace Account Manager representative if you have an account at Airspace.\n2. Reach out to integrations@airspace.com to get an API token. Once a token is generated for your account it will not expire.\n3. We will configure your account’s access to use our test environment. Use authorization type as **bearer token** before starting to make any requests.\n4. **[Optional]** We can also configure [webhooks](#section/Webhooks) to send status updates back to your system.\n5. Once development is complete reach out to us for end to end testing.\n6. After a few successful rounds of testing we will go live with your integration.\n## Environments\nEnvironment | URL | Description\n---|---|---\nProduction | https://api.airspace.com/api/public/v2 | For production use. Communicates with our production environment. Requires configuration.\nTest | https://apitest.airspace.com/api/public/v2 | For development and testing. Generally behaves the same as production.\n## Example Request\n```\n  curl -X POST \"https://apitest.airspace.com/api/public/v2/orders\"\n       -H \"accept: application/json\"\n       -H \"Content-Type: application/json\"\n       -H \"Authorization: Bearer **YOUR_API_KEY_HERE**\"\n       -d @api-data.json\n```\n## Response Codes\nAirspace uses conventional HTTP response codes to indicate the success or failure of an API request. In general:\n  - Codes in the 2xx range indicate success.\n  - Codes in the 4xx range indicate an error that failed given the information provided (e.g., a required parameter was omitted, a charge failed, etc.).\n  - Codes in the 5xx range indicate an error with Airspace's servers (these are rare).\n# Authentication\nYou will need an API key to access the Airspace API. Please contact integrations@airspace.com for your key.\nNote: Once you have a token it will never expire.\n# Webhooks\nAirspace can send webhooks programmatically to inform you about updates to your Order. A webhook is an HTTP request used to provide push notifications rather than making API calls to know the status of your Order. Webhooks can be triggered by an event, for example, a change in order status. When this change occurs, Airspace makes an HTTP request to your URL configured for the webhook.\n\nTo receive Airspace webhooks, set up a dedicated endpoint on your server as a webhook listener that can receive POST requests, then provide this endpoint URL to Airspace. Contact integrations@airspace.com to create or change your subscriptions.\n\n## Webhook Payload Structure\n\nEach webhook notification sent to your endpoint contains a complete payload with order details and event information. The payload structure varies dynamically based on the order state:\n\n- **Regular Status Updates**: Milestone events for normal order progression (picked up, in transit, delivered, etc.)\n- **Order Cancellations**: Problem events with cancellation details and error codes\n- **Order Delays**: Problem events with delay information and updated ETAs\n\n## Example Webhook Payloads\n\n### Regular Status Update\n```json\n{\n  \"message\": \"Order status is now in_route_to_destination. Contact integrations@airspace.com to manage webhook subscriptions.\",\n  \"events\": [{\n    \"milestone\": {},\n    \"occurred_at\": \"2026-01-22T15:30:45.123Z\"\n  }],\n  \"errors\": null,\n  \"updated_order_keys\": [\"status\"],\n  \"order\": {\n    \"tracking_id\": \"ATXYZ123ABC\",\n    \"tracking_url\": \"https://apitest.airspace.com/asap/tracking/ATXYZ123ABC\",\n    \"order_number\": 9000001,\n    \"status\": \"in_route_to_destination\",\n    \"current_segment\": \"delivery_drive\",\n    \"company_name\": \"Example Company\",\n    ...\n  }\n}\n```\n\n### Order Delay\n```json\n{\n  \"message\": \"Order has encountered a delay.\",\n  \"events\": [{\n    \"event_type\": \"delay\",\n    \"problem\": {\n      \"code\": \"2-001\",\n      \"description\": \"Changed shipment parameters\",\n      \"delivery_eta\": \"2026-01-23T16:00:00.000Z\",\n      \"note\": \"\"\n    },\n    \"occurred_at\": \"2026-01-22T14:25:30.941Z\"\n  }],\n  \"errors\": null,\n  \"updated_order_keys\": [\"estimated_pickup_time\"],\n  \"order\": { ... }\n}\n```\n\n### Order Cancellation\n```json\n{\n  \"message\": \"Order has been canceled.\",\n  \"events\": [{\n    \"problem\": {\n      \"code\": \"2-007\",\n      \"description\": \"Nothing to Pick Up or Shipment Not Ready/Uncontrollable delay at pickup\",\n      \"delivery_eta\": null,\n      \"note\": \"Shipment no longer needed\"\n    },\n    \"occurred_at\": \"2026-01-22T16:45:10.525Z\"\n  }],\n  \"errors\": null,\n  \"updated_order_keys\": [\"cancelled_at\", \"status\"],\n  \"order\": { ... }\n}\n```\n\n## Webhook Configuration Requirements\n\nTo receive webhook notifications, ensure your endpoint:\n1. Accepts POST requests with JSON payload\n2. Returns a 2xx status code on successful receipt\n3. Can handle the dynamic nature of the payload based on order state\n4. Uses the `order.tracking_id` or `order.order_number` fields to identify orders\n5. Handles all three event types (milestone, cancellation, delay)\nTo configure webhook status updates, we need the following:\n- The endpoints URL to which you want the updates sent.\n- Password to access the environment (test, production, or both).\n- Authentication method, one of:\n  - Username-password\n  - Bearer token\n  - OAuth\n- Content type (eg: JSON).\n- Request Method(PUT or POST).\n## Order Statuses\nThe following are order statues that are available to receive updates for via webhooks:\n\n**Note:** NFO/ Next Flight Out - an order that is scheduled to be shipped using a flight.\n\nStatus Code | Status Description\n---|---\n`will_call` | Creates a will call order which has not been routed and needs to be activated later for fulfillment. <br /><br />Order has an expiration time, typically 72 hours after creation. The expiration time can be changed as needed.\n`pending` | Creates a Quote which needs to be submitted for fulfillment.\n`customer_completed` | Creates an order in our system for fulfillment.\n`ops_acknowledged` | Our Operations team has acknowledged/reviewed the order.\n`available_for_pickup` | A driver has been assigned to the order.\n`in_route_to_pickup` | The driver is en route to pickup the order.\n`arrived_at_pickup_location` | The driver has arrived at the pickup location.\n`in_route_to_destination` | The driver has picked up the order and is en route to the airport (only for NFO orders).\n`accepted_by_airline` | The order has been successfully delivered to the airport and accepted the by the airline (only for NFO orders).\n`verified_onboard` | The order has been on boarded onto the plane (only for NFO orders).\n`reached_destination_airport` | The order has reached the destination airport (only for NFO orders).\n`available_for_recovery` | A driver has been assigned and the order is available to be picked up from the destination airport (only for for NFO orders).\n`in_route_to_recovery` | The driver is en route to pick up the order from the destination airport (only for NFO orders).\n`arrived_at_recovery_location` | The driver has arrived to pick up the order from the destination airport (only for NFO orders).\n`recovered_from_airline` | The driver has picked up the order from the destination airport and is en route to deliver the order to the destination address (only for NFO orders).\n`arrived_at_destination` / `arrived_at_destination2` | The driver has arrived at the destination address. <br /><br /> **NOTE:** arrived_at_destination is for drive only orders, arrived_at_destination2 is only for NFO orders.\n`delivered` | The order has been delivered.\n`admin_canceled` | The order has been canceled.\n"
+  version: 2.6.2
+  x-logo:
+    url: https://www.airspacetechnologies.com/hubfs/Updated%20logos/Airspace%20horizontal%20logotype%20black%20and%20green%20no%20background%20011321%20(1).png
+servers:
+- url: https://{environment}.airspace.com/api/public/v2
+  variables:
+    environment:
+      default: apitest
+      enum:
+      - api
+      - apitest
+tags:
+- name: Invoices
+  description: We support listing invoices for Orders. Please reach out to account manager for setup
+paths:
+  /invoices:
+    get:
+      summary: List Invoices
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          default: 1
+        description: Desired page number
+      - name: page_limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 25
+          default: 10
+        description: Amount of invoices to include in each page
+      - name: from_created_at
+        in: query
+        schema:
+          type: string
+          example: '2021-04-14 13:30:00'
+          description: If provided, this will filter for invoices where the created_at is greater than or equal the provided value.
+      - name: to_created_at
+        in: query
+        schema:
+          type: string
+          example: '2022-04-14 13:30:00'
+          description: If provided, this will filter for invoices where the created_at is less than or equal the provided value.
+      - name: order[from_created_at]
+        in: query
+        schema:
+          type: string
+          example: '2021-04-14 13:30:00'
+          description: If provided, this will filter for invoices whoes orders where the created_at is greater than or equal the provided value.
+      - name: order[to_created_at]
+        in: query
+        schema:
+          type: string
+          example: '2022-04-14 13:30:00'
+          description: If provided, this will filter for invoices whoes orders where the created_at is less than or equal the provided value.
+      - name: order[references][reference]
+        in: query
+        schema:
+          type: string
+          example: test reference
+          description: Filter by order reference
+      - name: order[references][context]
+        in: query
+        schema:
+          type: string
+          example: test context
+          description: Filter by order context
+      - name: order[pieces][barcode]
+        in: query
+        schema:
+          type: string
+          example: '1122334455'
+          description: Filter by piece barcode
+      - name: order[pieces][barcode_type]
+        in: query
+        schema:
+          type: string
+          example: barcode_type_123
+          description: Filter by piece barcode_type
+      - name: order[pieces][commodity]
+        in: query
+        schema:
+          type: string
+          example: misc parts
+          description: Filter by piece commodity
+      - name: order[has_dangerous_goods]
+        in: query
+        schema:
+          type: boolean
+          example: 'true'
+          description: Filter by order has_dangerous_goods value
+      - name: order[should_hold_at_airlines]
+        in: query
+        schema:
+          type: boolean
+          example: 'true'
+          description: Filter by order should_hold_at_airlines value
+      - name: order[service_type]
+        in: query
+        schema:
+          type: string
+          example: optimize_for_time
+          enum:
+          - recommended
+          - optimize_for_time
+          - optimize_for_cost
+          - drive_only
+          - optimize_for_green
+          description: Filter by order service_type value
+      security:
+      - Bearer: []
+      tags:
+      - Invoices
+      operationId: getInvoices
+      description: Get a list of Invoices
+      responses:
+        '200':
+          description: Get a list of invoices
+          content:
+            application/json:
+              example:
+                invoices:
+                - order_id: 72
+                  tracking_id: ATYFGD4P4J
+                  company_id: 236
+                  company_name: Space Air Inc.
+                  pickup_address:
+                    company_name: PickupsRUs
+                    street: 509 8th Street Southeast
+                    street2: Apt. 1
+                    street3: null
+                    city: Orange City
+                    state: IA
+                    zip: '51041'
+                    country: US
+                  pickup_time: null
+                  delivery_address:
+                    company_name: DeliveryCrew
+                    street: 199 Bell Street
+                    street2: Apt. 1
+                    street3: null
+                    city: Reno
+                    state: NV
+                    zip: '89503'
+                    country: US
+                  bill_to_address:
+                    company_name: Test Company
+                    street: 123 Test St
+                    street2: Suite 100
+                    street3: null
+                    city: Test City
+                    state: CA
+                    zip: '12345'
+                    country: US
+                  pieces:
+                  - length: 1.0
+                    width: 1.0
+                    height: 1.0
+                    dimension_unit: in
+                    weight: 1.0
+                    weight_unit: lbs
+                    commodity: Other - test
+                  - length: 2.0
+                    width: 2.0
+                    height: 2.0
+                    dimension_unit: in
+                    weight: 2.0
+                    weight_unit: lbs
+                    commodity: Other - Other - other
+                  references:
+                  - reference: null
+                    value: Ref123
+                  - reference: null
+                    value: Ref456
+                  - reference: null
+                    value: Ref789
+                  total_weight: 20
+                  total_weight_unit: kg
+                  service_type_code: DDF
+                  equipment_type: CHTR
+                  total_amount: '970.05'
+                  total_pieces: 2
+                  vehicle_type: car
+                  origin_airport: SAN
+                  destination_airport: TUS
+                  currency: null
+                  proof_of_delivery:
+                    name: Signature-46
+                    department: Department-46
+                    delivered_at: null
+                  line_items:
+                  - segment: pickup
+                    description: Base
+                    quantity: 2
+                    quantity_unit: miles
+                    rate: '52.70'
+                    amount: '15.40'
+                    edi_code: EDI1
+                    equipment_type: CHT
+                  airspace_remittance: 'Test Company
+
+                    123 Test St
+
+                    Suite 100
+
+                    Test City, CA 12345
+
+                    US'
+                  due_date: '2024-09-18T07:00:00.000Z'
+                  purchase_order_number: 'Service Level: AEXC'
+                  cancelled_at: null
+                pagination:
+                  page: 1
+                  total_pages: 1
+                  page_limit: 2
+                parameter_errors: {}
+        '401':
+          description: Authentication token is not authorized to complete the request.
+          content:
+            application/json:
+              example:
+                error: Unauthorized
+        '403':
+          description: Invoice polling is not configured
+          content:
+            application/json:
+              example:
+                error: Invoice polling is not configured for this company. Please contact your Account Manager to enable this feature.
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              example:
+                errors: Integration::Api::Public::V2::OrderFilterService::FilterError
+  /invoices/{tracking_id}:
+    parameters:
+    - name: tracking_id
+      in: path
+      description: Tracking ID or Order Number of an order
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Retrieve an Invoice
+      parameters:
+      - name: tracking_id
+        in: path
+        description: Tracking ID or Order Number of an order
+        required: true
+        schema:
+          type: string
+      security:
+      - Bearer: []
+      tags:
+      - Invoices
+      operationId: getInvoiceById
+      description: Returns invoice object
+      responses:
+        '200':
+          description: Returns a Invoice
+          content:
+            application/json:
+              example:
+                invoice:
+                  order_id: 72
+                  tracking_id: ATYFGD4P4J
+                  company_id: 256
+                  company_name: Space Air Inc.
+                  pickup_address:
+                    company_name: PickupsRUs
+                    street: 509 8th Street Southeast
+                    street2: Apt. 1
+                    street3: null
+                    city: Orange City
+                    state: IA
+                    zip: '51041'
+                    country: US
+                  pickup_time: null
+                  delivery_address:
+                    company_name: DeliveryCrew
+                    street: 199 Bell Street
+                    street2: Apt. 1
+                    street3: null
+                    city: Reno
+                    state: NV
+                    zip: '89503'
+                    country: US
+                  bill_to_address:
+                    company_name: Test Company
+                    street: 123 Test St
+                    street2: Suite 100
+                    street3: null
+                    city: Test City
+                    state: CA
+                    zip: '12345'
+                    country: US
+                  pieces:
+                  - length: 1.0
+                    width: 1.0
+                    height: 1.0
+                    dimension_unit: in
+                    weight: 1.0
+                    weight_unit: lbs
+                    commodity: Other - test
+                  - length: 2.0
+                    width: 2.0
+                    height: 2.0
+                    dimension_unit: in
+                    weight: 2.0
+                    weight_unit: lbs
+                    commodity: Other - Other - other
+                  references:
+                  - reference: null
+                    value: Ref123
+                  - reference: null
+                    value: Ref456
+                  - reference: null
+                    value: Ref789
+                  total_weight: 20
+                  total_weight_unit: kg
+                  service_type_code: DDF
+                  equipment_type: CHTR
+                  total_amount: '970.05'
+                  total_pieces: 2
+                  vehicle_type: car
+                  origin_airport: SAN
+                  destination_airport: TUS
+                  currency: null
+                  proof_of_delivery:
+                    name: Signature-50
+                    department: Department-50
+                    delivered_at: null
+                  line_items:
+                  - segment: pickup
+                    description: Base
+                    quantity: 2
+                    quantity_unit: miles
+                    rate: '52.70'
+                    amount: '15.40'
+                    edi_code: EDI1
+                    equipment_type: CHT
+                  airspace_remittance: 'Test Company
+
+                    123 Test St
+
+                    Suite 100
+
+                    Test City, CA 12345
+
+                    US'
+                  due_date: '2024-09-18T07:00:00.000Z'
+                  purchase_order_number: 'Service Level: AEXC'
+                  cancelled_at: null
+        '401':
+          description: Authentication token is not authorized to complete the request.
+          content:
+            application/json:
+              example:
+                error: Unauthorized
+        '403':
+          description: Invoice polling is not configured
+          content:
+            application/json:
+              example:
+                error: Invoice polling is not configured for this company. Please contact your Account Manager to enable this feature.
+        '404':
+          description: The order could not be found. Please check the id and try again.
+          content:
+            application/json:
+              example:
+                error: Not Found
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              example:
+                error: Unprocessable Entity
+components:
+  securitySchemes:
+    Bearer:
+      description: Unique API key necessary to make API requests.
+      type: http
+      scheme: bearer
+      name: Authorization
+      in: header

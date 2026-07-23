@@ -1,0 +1,52 @@
+generated: '2026-07-17'
+method: searched
+source: https://api.airspace.com/api-docs/v3
+apis:
+- openapi/airspace-technologies-v3-openapi.json
+- openapi/airspace-technologies-v2-openapi.json
+authentication:
+  style: bearer-token
+  header: Authorization
+  detail: See authentication/airspace-technologies-authentication.yml
+idempotency:
+  supported: false
+  note: >-
+    The V3 API is asynchronous and does not document a client idempotency-key header.
+    Request/response correlation is handled instead via a server-issued request_id
+    (see request_tracing below); webhooks echo the same request_id.
+pagination:
+  style: page-number
+  params:
+  - name: page
+    in: query
+    description: 1-based page index for list endpoints (orders, invoices, address_books, events).
+  - name: page_limit
+    in: query
+    description: Number of records per page.
+async_model:
+  description: >-
+    Most write requests return 202 Accepted with a message acknowledging receipt; the
+    order is then processed asynchronously and progress is delivered via webhooks and
+    the /orders/events polling endpoints. Successful reads return 200.
+request_tracing:
+  field: request_id
+  location: response body and webhook payloads
+  description: >-
+    A UUID returned in the initial API response and echoed on every webhook notification;
+    use it to correlate asynchronous webhook events with the originating request.
+versioning:
+  scheme: uri-path
+  current: v3
+  prior: v2
+  detail: Major version is the first path segment under /api/public/ (e.g. /api/public/v3).
+error_envelope:
+  shape: '{ "error": "<message>" }'
+  variant: '422 validation errors use { "errors": "<message>" }'
+  detail: See errors/airspace-technologies-problem-types.yml
+rate_limit_signaling:
+  documented: false
+cross_references:
+  errors: errors/airspace-technologies-problem-types.yml
+  lifecycle: lifecycle/airspace-technologies-lifecycle.yml
+  authentication: authentication/airspace-technologies-authentication.yml
+  webhooks: asyncapi/airspace-technologies-webhooks.yml

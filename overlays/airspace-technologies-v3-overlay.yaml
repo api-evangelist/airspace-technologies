@@ -1,0 +1,22 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Airspace Technologies V3 API
+  version: 1.0.0
+extends: openapi/airspace-technologies-v3-openapi.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-enriched: '2026-07-17'
+    x-apievangelist-artifacts:
+      authentication: authentication/airspace-technologies-authentication.yml
+      conventions: conventions/airspace-technologies-conventions.yml
+      errors: errors/airspace-technologies-problem-types.yml
+      lifecycle: lifecycle/airspace-technologies-lifecycle.yml
+      webhooks: asyncapi/airspace-technologies-webhooks.yml
+      data_model: data-model/airspace-technologies-data-model.yml
+      sandbox: sandbox/airspace-technologies-sandbox.yml
+- target: $.info
+  update:
+    x-apievangelist-async: >-
+      Asynchronous API: writes return 202 and progress arrives via webhooks / events
+      endpoints, correlated by request_id.

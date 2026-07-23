@@ -1,0 +1,23 @@
+generated: '2026-07-17'
+method: searched
+source: https://api.airspace.com/api-docs/v3
+versioning:
+  scheme: uri-path
+  current: v3
+  supported:
+  - v3
+  - v2
+  beta: v2/beta
+  docs: https://api.airspace.com/api-docs/
+deprecation:
+  policy_documented: false
+  note: No formal deprecation/sunset policy or RFC 8594 Sunset header support is published; V2 remains available alongside V3.
+sla:
+  documented: false
+status_page: https://airspace.statuspage.io
+environments:
+- name: production
+  url: https://api.airspace.com/api/public/v3
+- name: test
+  url: https://apitest.airspace.com/api/public/v3
+deprecated_operations: []

@@ -1,0 +1,59 @@
+generated: '2026-07-17'
+method: searched
+source: https://api.airspace.com/api-docs/v3
+spec_type: Webhooks
+transport: http
+direction: outbound
+description: >-
+  Airspace's V3 API is asynchronous; webhooks are integral to the order flow, delivering
+  error notifications and frequent status updates. Airspace makes an HTTP POST (or PUT) to
+  a subscriber-configured endpoint on order events. Subscriptions are managed by Airspace
+  (contact integrations@airspace.com), not self-service.
+delivery:
+  methods: [POST, PUT]
+  content_type: application/json
+  auth_options:
+  - username-password
+  - bearer-token
+  - oauth
+  expected_response: 2xx
+  correlation_field: request_id
+event_types:
+- type: milestone
+  description: Regular status updates for normal order progression.
+- type: delay
+  description: Problem event carrying a problem.code, updated delivery_eta and note.
+- type: cancellation
+  description: Problem event carrying cancellation details and a problem.code.
+payload_fields:
+- message
+- request_id
+- events
+- errors
+- updated_order_keys
+- order
+order_statuses:
+- will_call
+- pending
+- customer_completed
+- ops_acknowledged
+- available_for_pickup
+- en_route_to_pickup
+- arrived_at_pickup_location
+- en_route_to_destination
+- accepted_by_airline
+- verified_onboard
+- reached_destination_airport
+- available_for_recovery
+- in_route_to_recovery
+- arrived_at_recovery_location
+- recovered_from_airline
+- arrived_at_destination
+- arrived_at_destination2
+- delivered
+- admin_canceled
+polling_alternative:
+  description: The same event stream is also available by polling the REST events endpoints.
+  operations:
+  - openapi/airspace-technologies-v3-openapi.json#getOrdersEvents
+  - openapi/airspace-technologies-v3-openapi.json#getEventsForOrderById

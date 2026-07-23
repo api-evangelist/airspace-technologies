@@ -1,0 +1,39 @@
+generated: '2026-07-17'
+method: derived
+source: openapi/airspace-technologies-v3-openapi.json
+format: simple-error-envelope
+envelope:
+  success: '{ "error": "<message>" }'
+  validation: '{ "errors": "<message>" }'
+  note: Airspace does not use RFC 9457 application/problem+json; errors are a flat JSON envelope.
+problems:
+- status: 401
+  title: Unauthorized
+  description: Authentication token is not authorized to complete the request.
+  example: '{ "error": "Unauthorized" }'
+- status: 403
+  title: Forbidden / feature not enabled
+  description: >-
+    The requested capability is not enabled for the company (e.g. invoice polling not
+    configured). Contact your Account Manager to enable it.
+- status: 404
+  title: Not Found
+  description: The resource (e.g. order tracking_id) could not be found. Verify the id and retry.
+  example: '{ "error": "Not Found" }'
+- status: 422
+  title: Unprocessable Entity
+  description: Invalid query parameters or request body (validation error).
+  envelope_field: errors
+# Asynchronous shipment problem codes delivered via webhook `events[].problem.code`
+# (delay and cancellation events). These are operational, not HTTP-status, errors.
+shipment_problem_codes:
+  delivered_via: webhook events[].problem.code
+  codes:
+  - code: 2-001
+    meaning: Changed shipment parameters
+  - code: 2-007
+    meaning: Nothing to Pick Up or Shipment Not Ready / Uncontrollable delay at pickup
+  note: >-
+    Airspace publishes these two codes in the webhook documentation examples; the full
+    problem-code registry is provided by Airspace to integrators and is not enumerated
+    in the public OpenAPI.

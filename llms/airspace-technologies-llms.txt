@@ -1,0 +1,30 @@
+# Airspace Technologies
+
+> Airspace is a time-critical logistics provider offering AI-powered shipping (Next Flight Out, on-demand ground, charter, and specialty services) across 80+ countries. Its public V3 REST API supports Order Creation, Quote Generation, and Active Shipment Monitoring, with asynchronous processing delivered over webhooks.
+
+## APIs
+- [Airspace API Documentation (V3)](https://api.airspace.com/api-docs/v3): Current asynchronous REST API — orders, quotes, events, invoices, piece libraries, address books.
+- [Airspace API Documentation (V2)](https://api.airspace.com/api-docs/v2): Prior REST API version.
+- [API Docs portal](https://api.airspace.com/api-docs/): Version index (V2, V2 beta, V3).
+
+## Specs
+- [V3 OpenAPI](openapi/airspace-technologies-v3-openapi.json): OpenAPI 3.0.1, 17 operations, bearer auth.
+- [V2 OpenAPI](openapi/airspace-technologies-v2-openapi.json): OpenAPI 3.0.1, 16 operations.
+
+## Artifacts
+- [Authentication](authentication/airspace-technologies-authentication.yml): HTTP bearer token (non-expiring, provisioned by Airspace).
+- [Conventions](conventions/airspace-technologies-conventions.yml): async model, page/page_limit pagination, request_id correlation.
+- [Errors](errors/airspace-technologies-problem-types.yml): flat error envelope + shipment problem codes.
+- [Lifecycle](lifecycle/airspace-technologies-lifecycle.yml): uri-path versioning, status page.
+- [Webhooks](asyncapi/airspace-technologies-webhooks.yml): milestone / delay / cancellation events.
+- [Data model](data-model/airspace-technologies-data-model.yml): order / quote / piece / invoice graph.
+- [Sandbox](sandbox/airspace-technologies-sandbox.yml): apitest.airspace.com test environment.
+
+## Docs
+- [Developer / API docs](https://api.airspace.com/api-docs/)
+- [Trust Center](https://trust.airspace.com/): ISO 27001, ISO 9001, HIPAA, GDPR, CCPA.
+- [Status page](https://airspace.statuspage.io)
+- [Company](https://www.airspace.com/company/who-we-are)
+
+## Contact
+- Integrations / API tokens: integrations@airspace.com

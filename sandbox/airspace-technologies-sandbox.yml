@@ -1,0 +1,29 @@
+generated: '2026-07-17'
+method: searched
+source: https://api.airspace.com/api-docs/v3
+test_vs_live:
+  model: separate-environment
+  environments:
+  - name: test
+    base_url: https://apitest.airspace.com/api/public/v3
+    server_variable: environment=apitest
+    description: Development/testing environment; generally behaves the same as production.
+  - name: production
+    base_url: https://api.airspace.com/api/public/v3
+    server_variable: environment=api
+    description: Requires Airspace configuration before access is enabled.
+onboarding:
+  detail: >-
+    New integrators are configured against the test environment first. After successful
+    end-to-end testing, Airspace enables production access. Request a token via
+    integrations@airspace.com.
+test_tooling:
+- name: test_order_progression
+  operation: openapi/airspace-technologies-v3-openapi.json#testProgressOrder
+  path: PUT /orders/{tracking_id}/test_order_progression
+  description: >-
+    Test-environment helper that advances a test order through its lifecycle statuses so
+    integrators can exercise status webhooks without live fulfillment.
+notes:
+- No published static test card / magic-identifier set (this is a logistics API, not payments).
+- Tokens do not expire; the same bearer scheme is used in test and production.

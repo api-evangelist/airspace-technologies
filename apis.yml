@@ -1,22 +1,107 @@
 aid: airspace-technologies
 name: Airspace Technologies
-description: 'Airspace Technologies is a company surfaced as a portfolio company of scale-venture-partners
-  and added to the API Evangelist network as a stub for enrichment. Sector: logistics. This profile is
-  a lead awaiting the enrichment pipeline.'
+description: >-
+  Airspace Technologies is a time-critical logistics provider that uses AI-driven routing
+  to move urgent, high-value freight via Next Flight Out (NFO), on-demand ground, charter,
+  and specialty services across 80+ countries. Its public REST API (current V3, prior V2)
+  supports order creation, quote generation, and active shipment monitoring. The API is
+  asynchronous, authenticates with a non-expiring bearer token, paginates lists with
+  page/page_limit, and pushes milestone, delay, and cancellation updates over webhooks
+  correlated by request_id.
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://www.airspacetechnologies.com/hubfs/Updated%20logos/Airspace%20horizontal%20logotype%20black%20and%20green%20no%20background%20011321%20(1).png
 url: https://raw.githubusercontent.com/api-evangelist/airspace-technologies/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - scale-venture-partners
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-tier: enriched
+x-tier-reason: public-api-found
 specificationVersion: '0.20'
 created: '2026-07-17'
 modified: '2026-07-17'
 tags:
 - Company
 - Logistics
-apis: []
+- Shipping
+- Freight
+- Supply Chain
+- Transportation
+- Webhooks
+- Orders
+apis:
+- aid: airspace-technologies:airspace-technologies-address-books-api
+  name: Airspace Technologies Address Books API
+  description: We support listing reusable address entries.
+  humanURL: https://api.airspace.com/api-docs/v3
+  baseURL: https://api.airspace.com/api/public/v3
+  tags:
+  - Address Books
+  properties:
+  - type: OpenAPI
+    url: openapi/airspace-technologies-address-books-api-openapi.yml
+- aid: airspace-technologies:airspace-technologies-invoices-api
+  name: Airspace Technologies Invoices API
+  description: We support listing invoices for Orders. Please reach out to account manager for setup
+  humanURL: https://api.airspace.com/api-docs/v3
+  baseURL: https://api.airspace.com/api/public/v3
+  tags:
+  - Invoices
+  properties:
+  - type: OpenAPI
+    url: openapi/airspace-technologies-invoices-api-openapi.yml
+- aid: airspace-technologies:airspace-technologies-labels-api
+  name: Airspace Technologies Labels API
+  description: We support generating labels for Orders.
+  humanURL: https://api.airspace.com/api-docs/v3
+  baseURL: https://api.airspace.com/api/public/v3
+  tags:
+  - Labels
+  properties:
+  - type: OpenAPI
+    url: openapi/airspace-technologies-labels-api-openapi.yml
+- aid: airspace-technologies:airspace-technologies-orders-api
+  name: Airspace Technologies Orders API
+  description: We support order creation, updates, cancellation, information, and document upload.
+  humanURL: https://api.airspace.com/api-docs/v3
+  baseURL: https://api.airspace.com/api/public/v3
+  tags:
+  - Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/airspace-technologies-orders-api-openapi.yml
+- aid: airspace-technologies:airspace-technologies-piece-libraries-api
+  name: Airspace Technologies Piece Libraries API
+  description: We support listing reusable piece entries.
+  humanURL: https://api.airspace.com/api-docs/v3
+  baseURL: https://api.airspace.com/api/public/v3
+  tags:
+  - Piece Libraries
+  properties:
+  - type: OpenAPI
+    url: openapi/airspace-technologies-piece-libraries-api-openapi.yml
+- aid: airspace-technologies:airspace-technologies-quotes-api
+  name: Airspace Technologies Quotes API
+  description: >-
+    We support generating a Quote for a potential Order as well as confirming that Quote to place an Order.
+  humanURL: https://api.airspace.com/api-docs/v3
+  baseURL: https://api.airspace.com/api/public/v3
+  tags:
+  - Quotes
+  properties:
+  - type: OpenAPI
+    url: openapi/airspace-technologies-quotes-api-openapi.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -25,3 +110,56 @@ maintainers:
 common:
 - type: Website
   url: https://www.airspace.com/
+- type: DeveloperPortal
+  url: https://api.airspace.com/api-docs/
+- type: Documentation
+  url: https://api.airspace.com/api-docs/
+- type: APIReference
+  url: https://api.airspace.com/api-docs/v3
+- type: GettingStarted
+  url: https://api.airspace.com/api-docs/v3
+- type: Login
+  url: https://app.airspacetechnologies.com/users/sign_in
+- type: Support
+  url: https://www.airspace.com/contact-us
+- type: PrivacyPolicy
+  url: https://www.airspace.com/privacy-policy
+- type: GitHubOrganization
+  url: https://github.com/AirspaceTechnologies
+- type: StatusPage
+  url: https://airspace.statuspage.io
+- type: TrustCenter
+  url: security/airspace-technologies-trust-center.yml
+- type: Compliance
+  url: https://trust.airspace.com/
+- type: DomainSecurity
+  url: security/airspace-technologies-domain-security.yml
+- type: Authentication
+  url: authentication/airspace-technologies-authentication.yml
+- type: Conventions
+  url: conventions/airspace-technologies-conventions.yml
+- type: ErrorCatalog
+  url: errors/airspace-technologies-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/airspace-technologies-lifecycle.yml
+- type: Conformance
+  url: conformance/airspace-technologies-conformance.yml
+- type: DataModel
+  url: data-model/airspace-technologies-data-model.yml
+- type: Sandbox
+  url: sandbox/airspace-technologies-sandbox.yml
+- type: Webhooks
+  url: asyncapi/airspace-technologies-webhooks.yml
+- type: MCPServer
+  url: mcp/airspace-technologies-mcp.yml
+- type: LLMsTxt
+  url: llms/airspace-technologies-llms.txt
+- type: AgenticAccess
+  url: agentic-access/airspace-technologies-agentic-access.yml
+- type: AgentSkill
+  url: skills/_index.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

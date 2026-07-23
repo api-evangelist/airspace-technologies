@@ -1,0 +1,69 @@
+generated: '2026-07-17'
+method: derived
+source: openapi/airspace-technologies-v3-openapi.json
+entities:
+- name: order
+  description: A time-critical shipment order (the central resource).
+  key: tracking_id
+- name: quote
+  description: A price/viability quote that can be confirmed into an order.
+  key: tracking_id
+- name: piece
+  description: A physical item/package within an order or quote.
+- name: address
+  description: A pickup or delivery address with an embedded contact.
+- name: contact
+  description: A named person with phone details attached to an address.
+- name: reference
+  description: A customer reference key/value attached to an order or quote.
+- name: invoice
+  description: A billing invoice for fulfilled orders.
+  key: tracking_id
+- name: piece_library
+  description: A reusable saved piece definition.
+  key: piece_library_guid
+- name: address_book
+  description: A reusable saved address.
+- name: event
+  description: An order lifecycle event (milestone / delay / cancellation).
+relationships:
+- from: order
+  to: piece
+  type: has_many
+  via: pieces
+- from: order
+  to: pickup_address
+  type: has_one
+  via: pickup_address
+- from: order
+  to: delivery_address
+  type: has_one
+  via: delivery_address
+- from: order
+  to: reference
+  type: has_many
+  via: references
+- from: order
+  to: event
+  type: has_many
+  via: events
+- from: quote
+  to: piece
+  type: has_many
+  via: pieces
+- from: quote
+  to: order
+  type: converts_to
+  via: confirm
+- from: piece
+  to: piece_library
+  type: belongs_to
+  via: piece_library_guid
+- from: address
+  to: contact
+  type: has_one
+  via: contact
+- from: invoice
+  to: order
+  type: belongs_to
+  via: tracking_id
