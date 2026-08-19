@@ -1,0 +1,940 @@
+{
+  "item": [
+    {
+      "id": "848cf73d-8fc7-42cc-b61b-d25f0d3d8891",
+      "name": "Invoices",
+      "description": {
+        "content": "We support listing invoices for Orders. Please reach out to account manager for setup",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2e344b40-36b5-4ef5-aeb4-d20ad810d585",
+          "name": "List Invoices",
+          "request": {
+            "name": "List Invoices",
+            "description": {
+              "content": "Get a list of Invoices",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "invoices"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Desired page number"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_limit",
+                  "value": "10",
+                  "description": "Amount of invoices to include in each page"
+                },
+                {
+                  "disabled": false,
+                  "key": "from_created_at",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "to_created_at",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order[from_created_at]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order[to_created_at]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order[references][reference]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order[references][context]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order[pieces][barcode]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order[pieces][barcode_type]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order[pieces][commodity]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order[has_dangerous_goods]",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order[should_hold_at_airlines]",
+                  "value": "<boolean>"
+                },
+                {
+                  "disabled": false,
+                  "key": "order[service_type]",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "description": " (This can only be one of api,apitest)",
+                  "type": "any",
+                  "value": "{{environment}}",
+                  "key": "environment"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6d02c73e-313e-46b2-895b-678fb586de85",
+              "name": "Get a list of invoices",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "from_created_at",
+                      "value": "2021-04-14 13:30:00"
+                    },
+                    {
+                      "key": "to_created_at",
+                      "value": "2022-04-14 13:30:00"
+                    },
+                    {
+                      "key": "order[from_created_at]",
+                      "value": "2021-04-14 13:30:00"
+                    },
+                    {
+                      "key": "order[to_created_at]",
+                      "value": "2022-04-14 13:30:00"
+                    },
+                    {
+                      "key": "order[references][reference]",
+                      "value": "test reference"
+                    },
+                    {
+                      "key": "order[references][context]",
+                      "value": "test context"
+                    },
+                    {
+                      "key": "order[pieces][barcode]",
+                      "value": "1122334455"
+                    },
+                    {
+                      "key": "order[pieces][barcode_type]",
+                      "value": "barcode_type_123"
+                    },
+                    {
+                      "key": "order[pieces][commodity]",
+                      "value": "misc parts"
+                    },
+                    {
+                      "key": "order[has_dangerous_goods]",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "order[should_hold_at_airlines]",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "order[service_type]",
+                      "value": "optimize_for_time"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of api,apitest)",
+                      "type": "any",
+                      "value": "{{environment}}",
+                      "key": "environment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"invoices\": [\n    {\n      \"order_id\": 72,\n      \"tracking_id\": \"ATYFGD4P4J\",\n      \"company_id\": 236,\n      \"company_name\": \"Space Air Inc.\",\n      \"pickup_address\": {\n        \"company_name\": \"PickupsRUs\",\n        \"street\": \"509 8th Street Southeast\",\n        \"street2\": \"Apt. 1\",\n        \"street3\": null,\n        \"city\": \"Orange City\",\n        \"state\": \"IA\",\n        \"zip\": \"51041\",\n        \"country\": \"US\"\n      },\n      \"pickup_time\": null,\n      \"delivery_address\": {\n        \"company_name\": \"DeliveryCrew\",\n        \"street\": \"199 Bell Street\",\n        \"street2\": \"Apt. 1\",\n        \"street3\": null,\n        \"city\": \"Reno\",\n        \"state\": \"NV\",\n        \"zip\": \"89503\",\n        \"country\": \"US\"\n      },\n      \"bill_to_address\": {\n        \"company_name\": \"Test Company\",\n        \"street\": \"123 Test St\",\n        \"street2\": \"Suite 100\",\n        \"street3\": null,\n        \"city\": \"Test City\",\n        \"state\": \"CA\",\n        \"zip\": \"12345\",\n        \"country\": \"US\"\n      },\n      \"pieces\": [\n        {\n          \"length\": 1,\n          \"width\": 1,\n          \"height\": 1,\n          \"dimension_unit\": \"in\",\n          \"weight\": 1,\n          \"weight_unit\": \"lbs\",\n          \"commodity\": \"Other - test\"\n        },\n        {\n          \"length\": 2,\n          \"width\": 2,\n          \"height\": 2,\n          \"dimension_unit\": \"in\",\n          \"weight\": 2,\n          \"weight_unit\": \"lbs\",\n          \"commodity\": \"Other - Other - other\"\n        }\n      ],\n      \"references\": [\n        {\n          \"reference\": null,\n          \"value\": \"Ref123\"\n        },\n        {\n          \"reference\": null,\n          \"value\": \"Ref456\"\n        },\n        {\n          \"reference\": null,\n          \"value\": \"Ref789\"\n        }\n      ],\n      \"total_weight\": 20,\n      \"total_weight_unit\": \"kg\",\n      \"service_type_code\": \"DDF\",\n      \"equipment_type\": \"CHTR\",\n      \"total_amount\": \"970.05\",\n      \"total_pieces\": 2,\n      \"vehicle_type\": \"car\",\n      \"origin_airport\": \"SAN\",\n      \"destination_airport\": \"TUS\",\n      \"currency\": null,\n      \"proof_of_delivery\": {\n        \"name\": \"Signature-46\",\n        \"department\": \"Department-46\",\n        \"delivered_at\": null\n      },\n      \"line_items\": [\n        {\n          \"segment\": \"pickup\",\n          \"description\": \"Base\",\n          \"quantity\": 2,\n          \"quantity_unit\": \"miles\",\n          \"rate\": \"52.70\",\n          \"amount\": \"15.40\",\n          \"edi_code\": \"EDI1\",\n          \"equipment_type\": \"CHT\"\n        }\n      ],\n      \"airspace_remittance\": \"Test Company\\n123 Test St\\nSuite 100\\nTest City, CA 12345\\nUS\",\n      \"due_date\": \"2024-09-18T07:00:00.000Z\",\n      \"purchase_order_number\": \"Service Level: AEXC\",\n      \"cancelled_at\": null\n    }\n  ],\n  \"pagination\": {\n    \"page\": 1,\n    \"total_pages\": 1,\n    \"page_limit\": 2\n  },\n  \"parameter_errors\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "67263708-72fd-4420-a181-11d7fd1509e9",
+              "name": "Authentication token is not authorized to complete the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "from_created_at",
+                      "value": "2021-04-14 13:30:00"
+                    },
+                    {
+                      "key": "to_created_at",
+                      "value": "2022-04-14 13:30:00"
+                    },
+                    {
+                      "key": "order[from_created_at]",
+                      "value": "2021-04-14 13:30:00"
+                    },
+                    {
+                      "key": "order[to_created_at]",
+                      "value": "2022-04-14 13:30:00"
+                    },
+                    {
+                      "key": "order[references][reference]",
+                      "value": "test reference"
+                    },
+                    {
+                      "key": "order[references][context]",
+                      "value": "test context"
+                    },
+                    {
+                      "key": "order[pieces][barcode]",
+                      "value": "1122334455"
+                    },
+                    {
+                      "key": "order[pieces][barcode_type]",
+                      "value": "barcode_type_123"
+                    },
+                    {
+                      "key": "order[pieces][commodity]",
+                      "value": "misc parts"
+                    },
+                    {
+                      "key": "order[has_dangerous_goods]",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "order[should_hold_at_airlines]",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "order[service_type]",
+                      "value": "optimize_for_time"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of api,apitest)",
+                      "type": "any",
+                      "value": "{{environment}}",
+                      "key": "environment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "583cb137-fdc1-4a60-b354-614781e0e110",
+              "name": "Invoice polling is not configured",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "from_created_at",
+                      "value": "2021-04-14 13:30:00"
+                    },
+                    {
+                      "key": "to_created_at",
+                      "value": "2022-04-14 13:30:00"
+                    },
+                    {
+                      "key": "order[from_created_at]",
+                      "value": "2021-04-14 13:30:00"
+                    },
+                    {
+                      "key": "order[to_created_at]",
+                      "value": "2022-04-14 13:30:00"
+                    },
+                    {
+                      "key": "order[references][reference]",
+                      "value": "test reference"
+                    },
+                    {
+                      "key": "order[references][context]",
+                      "value": "test context"
+                    },
+                    {
+                      "key": "order[pieces][barcode]",
+                      "value": "1122334455"
+                    },
+                    {
+                      "key": "order[pieces][barcode_type]",
+                      "value": "barcode_type_123"
+                    },
+                    {
+                      "key": "order[pieces][commodity]",
+                      "value": "misc parts"
+                    },
+                    {
+                      "key": "order[has_dangerous_goods]",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "order[should_hold_at_airlines]",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "order[service_type]",
+                      "value": "optimize_for_time"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of api,apitest)",
+                      "type": "any",
+                      "value": "{{environment}}",
+                      "key": "environment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Invoice polling is not configured for this company. Please contact your Account Manager to enable this feature.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bb8610f9-1280-4f4f-8194-47e9c4d31792",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "from_created_at",
+                      "value": "2021-04-14 13:30:00"
+                    },
+                    {
+                      "key": "to_created_at",
+                      "value": "2022-04-14 13:30:00"
+                    },
+                    {
+                      "key": "order[from_created_at]",
+                      "value": "2021-04-14 13:30:00"
+                    },
+                    {
+                      "key": "order[to_created_at]",
+                      "value": "2022-04-14 13:30:00"
+                    },
+                    {
+                      "key": "order[references][reference]",
+                      "value": "test reference"
+                    },
+                    {
+                      "key": "order[references][context]",
+                      "value": "test context"
+                    },
+                    {
+                      "key": "order[pieces][barcode]",
+                      "value": "1122334455"
+                    },
+                    {
+                      "key": "order[pieces][barcode_type]",
+                      "value": "barcode_type_123"
+                    },
+                    {
+                      "key": "order[pieces][commodity]",
+                      "value": "misc parts"
+                    },
+                    {
+                      "key": "order[has_dangerous_goods]",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "order[should_hold_at_airlines]",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "order[service_type]",
+                      "value": "optimize_for_time"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of api,apitest)",
+                      "type": "any",
+                      "value": "{{environment}}",
+                      "key": "environment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": \"Integration::Api::Public::V2::OrderFilterService::FilterError\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "24eb59d1-6873-4de9-8c21-c8a309eb7b27",
+          "name": "Retrieve an Invoice",
+          "request": {
+            "name": "Retrieve an Invoice",
+            "description": {
+              "content": "Returns invoice object",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "invoices",
+                ":tracking_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tracking_id",
+                  "description": "(Required) Tracking ID or Order Number of an order"
+                },
+                {
+                  "description": " (This can only be one of api,apitest)",
+                  "type": "any",
+                  "value": "{{environment}}",
+                  "key": "environment"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "67edf4bb-0a3f-4aa4-a7c7-ae4284248f02",
+              "name": "Returns a Invoice",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    ":tracking_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tracking_id",
+                      "description": "(Required) Tracking ID or Order Number of an order"
+                    },
+                    {
+                      "description": " (This can only be one of api,apitest)",
+                      "type": "any",
+                      "value": "{{environment}}",
+                      "key": "environment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"invoice\": {\n    \"order_id\": 72,\n    \"tracking_id\": \"ATYFGD4P4J\",\n    \"company_id\": 256,\n    \"company_name\": \"Space Air Inc.\",\n    \"pickup_address\": {\n      \"company_name\": \"PickupsRUs\",\n      \"street\": \"509 8th Street Southeast\",\n      \"street2\": \"Apt. 1\",\n      \"street3\": null,\n      \"city\": \"Orange City\",\n      \"state\": \"IA\",\n      \"zip\": \"51041\",\n      \"country\": \"US\"\n    },\n    \"pickup_time\": null,\n    \"delivery_address\": {\n      \"company_name\": \"DeliveryCrew\",\n      \"street\": \"199 Bell Street\",\n      \"street2\": \"Apt. 1\",\n      \"street3\": null,\n      \"city\": \"Reno\",\n      \"state\": \"NV\",\n      \"zip\": \"89503\",\n      \"country\": \"US\"\n    },\n    \"bill_to_address\": {\n      \"company_name\": \"Test Company\",\n      \"street\": \"123 Test St\",\n      \"street2\": \"Suite 100\",\n      \"street3\": null,\n      \"city\": \"Test City\",\n      \"state\": \"CA\",\n      \"zip\": \"12345\",\n      \"country\": \"US\"\n    },\n    \"pieces\": [\n      {\n        \"length\": 1,\n        \"width\": 1,\n        \"height\": 1,\n        \"dimension_unit\": \"in\",\n        \"weight\": 1,\n        \"weight_unit\": \"lbs\",\n        \"commodity\": \"Other - test\"\n      },\n      {\n        \"length\": 2,\n        \"width\": 2,\n        \"height\": 2,\n        \"dimension_unit\": \"in\",\n        \"weight\": 2,\n        \"weight_unit\": \"lbs\",\n        \"commodity\": \"Other - Other - other\"\n      }\n    ],\n    \"references\": [\n      {\n        \"reference\": null,\n        \"value\": \"Ref123\"\n      },\n      {\n        \"reference\": null,\n        \"value\": \"Ref456\"\n      },\n      {\n        \"reference\": null,\n        \"value\": \"Ref789\"\n      }\n    ],\n    \"total_weight\": 20,\n    \"total_weight_unit\": \"kg\",\n    \"service_type_code\": \"DDF\",\n    \"equipment_type\": \"CHTR\",\n    \"total_amount\": \"970.05\",\n    \"total_pieces\": 2,\n    \"vehicle_type\": \"car\",\n    \"origin_airport\": \"SAN\",\n    \"destination_airport\": \"TUS\",\n    \"currency\": null,\n    \"proof_of_delivery\": {\n      \"name\": \"Signature-50\",\n      \"department\": \"Department-50\",\n      \"delivered_at\": null\n    },\n    \"line_items\": [\n      {\n        \"segment\": \"pickup\",\n        \"description\": \"Base\",\n        \"quantity\": 2,\n        \"quantity_unit\": \"miles\",\n        \"rate\": \"52.70\",\n        \"amount\": \"15.40\",\n        \"edi_code\": \"EDI1\",\n        \"equipment_type\": \"CHT\"\n      }\n    ],\n    \"airspace_remittance\": \"Test Company\\n123 Test St\\nSuite 100\\nTest City, CA 12345\\nUS\",\n    \"due_date\": \"2024-09-18T07:00:00.000Z\",\n    \"purchase_order_number\": \"Service Level: AEXC\",\n    \"cancelled_at\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ae15588b-a8f6-4f4a-a238-410d00989f5a",
+              "name": "Authentication token is not authorized to complete the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    ":tracking_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tracking_id",
+                      "description": "(Required) Tracking ID or Order Number of an order"
+                    },
+                    {
+                      "description": " (This can only be one of api,apitest)",
+                      "type": "any",
+                      "value": "{{environment}}",
+                      "key": "environment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63ac854d-b86d-463c-a48d-5b4012c99c4a",
+              "name": "Invoice polling is not configured",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    ":tracking_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tracking_id",
+                      "description": "(Required) Tracking ID or Order Number of an order"
+                    },
+                    {
+                      "description": " (This can only be one of api,apitest)",
+                      "type": "any",
+                      "value": "{{environment}}",
+                      "key": "environment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Invoice polling is not configured for this company. Please contact your Account Manager to enable this feature.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a3fbbf7-8198-4a5f-a8e1-233a23ce58a7",
+              "name": "The order could not be found. Please check the id and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    ":tracking_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tracking_id",
+                      "description": "(Required) Tracking ID or Order Number of an order"
+                    },
+                    {
+                      "description": " (This can only be one of api,apitest)",
+                      "type": "any",
+                      "value": "{{environment}}",
+                      "key": "environment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Not Found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f932bf2-18cc-4425-b0d7-3ee3076d9393",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invoices",
+                    ":tracking_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tracking_id",
+                      "description": "(Required) Tracking ID or Order Number of an order"
+                    },
+                    {
+                      "description": " (This can only be one of api,apitest)",
+                      "type": "any",
+                      "value": "{{environment}}",
+                      "key": "environment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Unprocessable Entity\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": " (This can only be one of api,apitest)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "apitest",
+      "key": "environment"
+    },
+    {
+      "type": "string",
+      "value": "https://{{environment}}.airspace.com/api/public/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "fb69af10-6c51-4d3e-b02c-7c53cb66d6c1",
+    "name": "Airspace API Documentation Address Books Invoices API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Introduction\nAirspace's V2 API is a RESTful API. Our API accepts JSON-encoded request bodies, returns JSON-encoded\nresponses, and uses standard HTTP response codes, authentication, and verbs. With this API you can build\nintegrations for Order Creation, Quote Generation, Label Generation, and Active Shipment Monitoring.\n## Getting started with the Airspace API\n1. Check with your Airspace Account Manager representative if you have an account at Airspace.\n2. Reach out to integrations@airspace.com to get an API token. Once a token is generated for your account it will not expire.\n3. We will configure your account’s access to use our test environment. Use authorization type as **bearer token** before starting to make any requests.\n4. **[Optional]** We can also configure [webhooks](#section/Webhooks) to send status updates back to your system.\n5. Once development is complete reach out to us for end to end testing.\n6. After a few successful rounds of testing we will go live with your integration.\n## Environments\nEnvironment | URL | Description\n---|---|---\nProduction | https://api.airspace.com/api/public/v2 | For production use. Communicates with our production environment. Requires configuration.\nTest | https://apitest.airspace.com/api/public/v2 | For development and testing. Generally behaves the same as production.\n## Example Request\n```\n  curl -X POST \"https://apitest.airspace.com/api/public/v2/orders\"\n       -H \"accept: application/json\"\n       -H \"Content-Type: application/json\"\n       -H \"Authorization: Bearer **YOUR_API_KEY_HERE**\"\n       -d @api-data.json\n```\n## Response Codes\nAirspace uses conventional HTTP response codes to indicate the success or failure of an API request. In general:\n  - Codes in the 2xx range indicate success.\n  - Codes in the 4xx range indicate an error that failed given the information provided (e.g., a required parameter was omitted, a charge failed, etc.).\n  - Codes in the 5xx range indicate an error with Airspace's servers (these are rare).\n# Authentication\nYou will need an API key to access the Airspace API. Please contact integrations@airspace.com for your key.\nNote: Once you have a token it will never expire.\n# Webhooks\nAirspace can send webhooks programmatically to inform you about updates to your Order. A webhook is an HTTP request used to provide push notifications rather than making API calls to know the status of your Order. Webhooks can be triggered by an event, for example, a change in order status. When this change occurs, Airspace makes an HTTP request to your URL configured for the webhook.\n\nTo receive Airspace webhooks, set up a dedicated endpoint on your server as a webhook listener that can receive POST requests, then provide this endpoint URL to Airspace. Contact integrations@airspace.com to create or change your subscriptions.\n\n## Webhook Payload Structure\n\nEach webhook notification sent to your endpoint contains a complete payload with order details and event information. The payload structure varies dynamically based on the order state:\n\n- **Regular Status Updates**: Milestone events for normal order progression (picked up, in transit, delivered, etc.)\n- **Order Cancellations**: Problem events with cancellation details and error codes\n- **Order Delays**: Problem events with delay information and updated ETAs\n\n## Example Webhook Payloads\n\n### Regular Status Update\n```json\n{\n  \"message\": \"Order status is now in_route_to_destination. Contact integrations@airspace.com to manage webhook subscriptions.\",\n  \"events\": [{\n    \"milestone\": {},\n    \"occurred_at\": \"2026-01-22T15:30:45.123Z\"\n  }],\n  \"errors\": null,\n  \"updated_order_keys\": [\"status\"],\n  \"order\": {\n    \"tracking_id\": \"ATXYZ123ABC\",\n    \"tracking_url\": \"https://apitest.airspace.com/asap/tracking/ATXYZ123ABC\",\n    \"order_number\": 9000001,\n    \"status\": \"in_route_to_destination\",\n    \"current_segment\": \"delivery_drive\",\n    \"company_name\": \"Example Company\",\n    ...\n  }\n}\n```\n\n### Order Delay\n```json\n{\n  \"message\": \"Order has encountered a delay.\",\n  \"events\": [{\n    \"event_type\": \"delay\",\n    \"problem\": {\n      \"code\": \"2-001\",\n      \"description\": \"Changed shipment parameters\",\n      \"delivery_eta\": \"2026-01-23T16:00:00.000Z\",\n      \"note\": \"\"\n    },\n    \"occurred_at\": \"2026-01-22T14:25:30.941Z\"\n  }],\n  \"errors\": null,\n  \"updated_order_keys\": [\"estimated_pickup_time\"],\n  \"order\": { ... }\n}\n```\n\n### Order Cancellation\n```json\n{\n  \"message\": \"Order has been canceled.\",\n  \"events\": [{\n    \"problem\": {\n      \"code\": \"2-007\",\n      \"description\": \"Nothing to Pick Up or Shipment Not Ready/Uncontrollable delay at pickup\",\n      \"delivery_eta\": null,\n      \"note\": \"Shipment no longer needed\"\n    },\n    \"occurred_at\": \"2026-01-22T16:45:10.525Z\"\n  }],\n  \"errors\": null,\n  \"updated_order_keys\": [\"cancelled_at\", \"status\"],\n  \"order\": { ... }\n}\n```\n\n## Webhook Configuration Requirements\n\nTo receive webhook notifications, ensure your endpoint:\n1. Accepts POST requests with JSON payload\n2. Returns a 2xx status code on successful receipt\n3. Can handle the dynamic nature of the payload based on order state\n4. Uses the `order.tracking_id` or `order.order_number` fields to identify orders\n5. Handles all three event types (milestone, cancellation, delay)\nTo configure webhook status updates, we need the following:\n- The endpoints URL to which you want the updates sent.\n- Password to access the environment (test, production, or both).\n- Authentication method, one of:\n  - Username-password\n  - Bearer token\n  - OAuth\n- Content type (eg: JSON).\n- Request Method(PUT or POST).\n## Order Statuses\nThe following are order statues that are available to receive updates for via webhooks:\n\n**Note:** NFO/ Next Flight Out - an order that is scheduled to be shipped using a flight.\n\nStatus Code | Status Description\n---|---\n`will_call` | Creates a will call order which has not been routed and needs to be activated later for fulfillment. <br /><br />Order has an expiration time, typically 72 hours after creation. The expiration time can be changed as needed.\n`pending` | Creates a Quote which needs to be submitted for fulfillment.\n`customer_completed` | Creates an order in our system for fulfillment.\n`ops_acknowledged` | Our Operations team has acknowledged/reviewed the order.\n`available_for_pickup` | A driver has been assigned to the order.\n`in_route_to_pickup` | The driver is en route to pickup the order.\n`arrived_at_pickup_location` | The driver has arrived at the pickup location.\n`in_route_to_destination` | The driver has picked up the order and is en route to the airport (only for NFO orders).\n`accepted_by_airline` | The order has been successfully delivered to the airport and accepted the by the airline (only for NFO orders).\n`verified_onboard` | The order has been on boarded onto the plane (only for NFO orders).\n`reached_destination_airport` | The order has reached the destination airport (only for NFO orders).\n`available_for_recovery` | A driver has been assigned and the order is available to be picked up from the destination airport (only for for NFO orders).\n`in_route_to_recovery` | The driver is en route to pick up the order from the destination airport (only for NFO orders).\n`arrived_at_recovery_location` | The driver has arrived to pick up the order from the destination airport (only for NFO orders).\n`recovered_from_airline` | The driver has picked up the order from the destination airport and is en route to deliver the order to the destination address (only for NFO orders).\n`arrived_at_destination` / `arrived_at_destination2` | The driver has arrived at the destination address. <br /><br /> **NOTE:** arrived_at_destination is for drive only orders, arrived_at_destination2 is only for NFO orders.\n`delivered` | The order has been delivered.\n`admin_canceled` | The order has been canceled.\n",
+      "type": "text/plain"
+    }
+  }
+}

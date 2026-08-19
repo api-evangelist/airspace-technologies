@@ -1,0 +1,508 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Airspace API Documentation Address Books Orders API",
+    "version": "2.6.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{environment}.airspace.com/api/public/v2/orders",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Desired page number"
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "Amount of orders to include in each page"
+              },
+              {
+                "name": "from_created_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "to_created_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[references][reference]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[references][context]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[pieces][barcode]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[pieces][barcode_type]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[pieces][commodity]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[status]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[has_dangerous_goods]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[should_hold_at_airlines]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[service_type]",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a list of active orders from our system"
+        },
+        {
+          "info": {
+            "name": "Create an Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{environment}.airspace.com/api/public/v2/orders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new order\n\n**NOTE:** After a request has been accepted, `pickup_time` will be returned as the actual time an Order is picked up.'\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{environment}.airspace.com/api/public/v2/orders/:tracking_id",
+            "params": [
+              {
+                "name": "tracking_id",
+                "value": "",
+                "type": "path",
+                "description": "Tracking ID or Order Number of an order"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns order object including order status and location"
+        },
+        {
+          "info": {
+            "name": "Update an Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{environment}.airspace.com/api/public/v2/orders/:tracking_id",
+            "params": [
+              {
+                "name": "tracking_id",
+                "value": "",
+                "type": "path",
+                "description": "Tracking ID or Order Number of an order"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "If the order is in an updatable status (`will_call`, `pending`, `customer_completed`) updates are allowed in\nspecific scenarios.\n- If order status is `will_call` or `pending` you can update any attribute that can be created.\n- If a driver has been assigned to the order, it is up to our Operations team to manually approve your request.\n- If a driver has not been assigned:\n  - We allow updates to piece dimensions before pickup, as long as the assigned vehicle type is Car.\n  - We don’t allow update"
+        },
+        {
+          "info": {
+            "name": "Cancel an Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{environment}.airspace.com/api/public/v2/orders/:tracking_id",
+            "params": [
+              {
+                "name": "tracking_id",
+                "value": "",
+                "type": "path",
+                "description": "Tracking ID or Order Number of an order"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "An order should be cancellable as long as it does not have an assigned driver, and it's in a cancellable\nstatus (pending, customer_completed, ops_acknowledged, will_call). If the order cannot be canceled\nautomatically for any reason, we will notify our Ops team of your request for cancellation.\n\nWhen an order is beyond ops_acknowledged, it cannot be canceled through the API. Contact Operations to\ncancel the order in that scenario.\n"
+        },
+        {
+          "info": {
+            "name": "Add documents to an Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{environment}.airspace.com/api/public/v2/orders/:tracking_id/documents",
+            "params": [
+              {
+                "name": "tracking_id",
+                "value": "",
+                "type": "path",
+                "description": "Tracking ID or Order Number of an order"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "document",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "show_driver",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Upload documents to attach with an order. Document types include but not limited to pdf, jpg, doc, xls, txt, ect."
+        },
+        {
+          "info": {
+            "name": "Activate a will call Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{environment}.airspace.com/api/public/v2/orders/:tracking_id/activate_will_call",
+            "params": [
+              {
+                "name": "tracking_id",
+                "value": "",
+                "type": "path",
+                "description": "Tracking ID or Order Number of an order"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Will activate order if the order status is will call. If the order is not a will call order a 409 conflict is returned"
+        },
+        {
+          "info": {
+            "name": "Events for Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{environment}.airspace.com/api/public/v2/orders/events",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The desired page number"
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "Amount of orders to include in each page"
+              },
+              {
+                "name": "from_created_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "to_created_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[references][reference]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[references][context]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[pieces][barcode]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[pieces][barcode_type]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[pieces][commodity]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[status]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[has_dangerous_goods]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[should_hold_at_airlines]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[service_type]",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a list of events from active orders in our system"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Order's events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{environment}.airspace.com/api/public/v2/orders/:tracking_id/events",
+            "params": [
+              {
+                "name": "tracking_id",
+                "value": "",
+                "type": "path",
+                "description": "Tracking ID or Order Number of an order"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns order's events"
+        },
+        {
+          "info": {
+            "name": "Activate an Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{environment}.airspace.com/api/public/v2/orders/:tracking_id/activate",
+            "params": [
+              {
+                "name": "tracking_id",
+                "value": "",
+                "type": "path",
+                "description": "Tracking ID or Order Number of an order"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Will activate order if the order status is will call or recently aquired quotes. If the order is not a\nwill call order or a quote a 409 conflict is returned.\n\n**NOTE:** Can only provide paramaters pickup_time and/or shipment_viability if the order is a will call\norder.\n"
+        },
+        {
+          "info": {
+            "name": "Test progress an Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{environment}.airspace.com/api/public/v2/orders/:tracking_id/test_order_progression",
+            "params": [
+              {
+                "name": "tracking_id",
+                "value": "",
+                "type": "path",
+                "description": "Tracking ID or Order Number of an order"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Will progress an order through the test environment. If the environment is not TESTa 409 conflict is returned. "
+        },
+        {
+          "info": {
+            "name": "Create a Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{environment}.airspace.com/api/public/v2/orders/quotes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a Quote"
+        },
+        {
+          "info": {
+            "name": "Retrieve a Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{environment}.airspace.com/api/public/v2/orders/quotes/:tracking_id",
+            "params": [
+              {
+                "name": "tracking_id",
+                "value": "",
+                "type": "path",
+                "description": "Tracking ID or Order Number of an order"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a Quote"
+        },
+        {
+          "info": {
+            "name": "Create a will call Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{environment}.airspace.com/api/public/v2/orders/will_call",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a will call Order"
+        },
+        {
+          "info": {
+            "name": "Update a will call Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{environment}.airspace.com/api/public/v2/orders/will_call/:tracking_id",
+            "params": [
+              {
+                "name": "tracking_id",
+                "value": "",
+                "type": "path",
+                "description": "Tracking ID or Order Number of an order"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "If order status is `will_call` you can update any attribute that can be created.\n\nAbove conditions are subject to change without prior notice.\n\n**NOTE:** Only provide attributes to update. If updating pieces or references you must include all items.\nAll previous pieces or references will be removed and replaced with new objects.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

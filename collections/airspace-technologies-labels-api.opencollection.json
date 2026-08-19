@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Airspace API Documentation Address Books Labels API",
+    "version": "2.6.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Labels",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a printable Airspace package label",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{environment}.airspace.com/api/public/v2/labels/:piece.id.pdf",
+            "params": [
+              {
+                "name": "piece.id",
+                "value": "",
+                "type": "path",
+                "description": "Piece ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Each piece should have it's own printed label. The id for each piece is in the Order object."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

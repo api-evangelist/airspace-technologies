@@ -2,9 +2,8 @@ generated: '2026-07-17'
 method: derived
 status: candidate
 source: openapi/airspace-technologies-v3-openapi.json
-note: >-
-  Airspace publishes no official hosted/remote MCP server. This is a candidate tool
-  surface derived one-to-one from the V3 OpenAPI operations for potential agent access.
+note: Airspace publishes no official hosted/remote MCP server. This is a candidate tool surface derived
+  one-to-one from the V3 OpenAPI operations for potential agent access.
 server:
   name: airspace-technologies
   transport: http
@@ -57,3 +56,9 @@ tools:
 - name: get_piece_libraries
   description: List reusable piece libraries.
   source_operation: openapi/airspace-technologies-v3-openapi.json#getPieceLibraries
+deployment:
+  mode: none
+  verified: derived
+  tools: 16
+  checked: '2026-08-12'
+  source: catalog MCP census

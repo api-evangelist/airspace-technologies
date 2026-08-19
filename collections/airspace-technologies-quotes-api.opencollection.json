@@ -1,0 +1,83 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Airspace API Documentation Address Books Quotes API",
+    "version": "2.6.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Quotes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a Quote for a potential Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{environment}.airspace.com/api/public/v2/quotes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "If the quote comes back as null then the pieces exceed our weight and/or size limits.\n        Please contact our operations team for a quote."
+        },
+        {
+          "info": {
+            "name": "Retrieve a Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{environment}.airspace.com/api/public/v2/quotes/:tracking_id",
+            "params": [
+              {
+                "name": "tracking_id",
+                "value": "",
+                "type": "path",
+                "description": "Tracking ID or Order Number of quote"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a potential order."
+        },
+        {
+          "info": {
+            "name": "Confirm a Quote for fulfilment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{environment}.airspace.com/api/public/v2/quotes/:tracking_id/confirm",
+            "params": [
+              {
+                "name": "tracking_id",
+                "value": "",
+                "type": "path",
+                "description": "Tracking ID or Order Number of quote"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Accept the quoted order and submit it for fulfillment"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

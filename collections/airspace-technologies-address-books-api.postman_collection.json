@@ -1,0 +1,191 @@
+{
+  "item": [
+    {
+      "id": "1f262dc4-26a4-42cc-91bf-8f351b379087",
+      "name": "Address Books",
+      "description": {
+        "content": "We support listing reusable address entries.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e37d63ce-8eab-4535-89e1-249eeddb5015",
+          "name": "List Address Books",
+          "request": {
+            "name": "List Address Books",
+            "description": {
+              "content": "Get a list of available AddressBook items from our system",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "address_books"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": " (This can only be one of api,apitest)",
+                  "type": "any",
+                  "value": "{{environment}}",
+                  "key": "environment"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ee46a429-3350-474d-99fd-e52eff96102e",
+              "name": "Get a list of address books",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "address_books"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of api,apitest)",
+                      "type": "any",
+                      "value": "{{environment}}",
+                      "key": "environment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"address_books\": [\n    {\n      \"id\": 1,\n      \"name\": \"Myles Beier\",\n      \"company_id\": 291,\n      \"created_at\": \"2022-04-25T18:55:19.975Z\",\n      \"updated_at\": \"2022-04-25T18:55:19.975Z\",\n      \"frequent_order_id\": null,\n      \"address_id\": 681,\n      \"guid\": \"AT4429JJ39\",\n      \"address\": {\n        \"id\": 681,\n        \"street\": \"509 8th Street Southeast\",\n        \"street2\": \"Apt. 1\",\n        \"street3\": null,\n        \"city\": \"Orange City\",\n        \"state\": \"IA\",\n        \"zip\": \"51041\",\n        \"created_at\": \"2022-04-26T20:24:50.138Z\",\n        \"updated_at\": \"2022-04-26T20:24:50.138Z\",\n        \"lat\": \"42.997673\",\n        \"lng\": \"-96.052662\",\n        \"geocoded_lat\": null,\n        \"geocoded_lng\": null,\n        \"time_zone\": \"America/Los_Angeles\",\n        \"company\": \"PickupsRUs\",\n        \"derived_from_airport\": null,\n        \"country\": \"US\",\n        \"name\": \"Myles Beier\",\n        \"special_instructions\": \"pick it up\",\n        \"known_shipper_number\": null,\n        \"nearest_iata_code\": null,\n        \"id_check_required\": false,\n        \"id_check_verified\": false,\n        \"id_check_status\": \"ksms_missing\",\n        \"physical_id_check_required\": false,\n        \"full_address\": \"509 8th Street Southeast, Apt. 1, Orange City, IA, US, 51041\",\n        \"phone\": {\n          \"id\": 1466,\n          \"country_code\": \"45\",\n          \"number\": \"9311546931\",\n          \"extension\": \"2436\",\n          \"formatted_number\": \"+45 9311546931, ext. 2436\",\n          \"twilio_number\": \"+459311546931\"\n        },\n        \"verified_ksms_number\": null,\n        \"address_custom_attribute_values\": [],\n        \"schedule_blocks\": [],\n        \"is_hub\": false\n      },\n      \"companies_including\": [],\n      \"company\": null,\n      \"company_name\": null,\n      \"provider_company\": null,\n      \"location_schedule_id\": null,\n      \"schedule_id\": null,\n      \"schedule\": null\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ff073ff7-92f2-45ac-8b4f-453e4924b9ae",
+              "name": "Authentication token is not authorized to complete the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "address_books"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": " (This can only be one of api,apitest)",
+                      "type": "any",
+                      "value": "{{environment}}",
+                      "key": "environment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": " (This can only be one of api,apitest)",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "apitest",
+      "key": "environment"
+    },
+    {
+      "type": "string",
+      "value": "https://{{environment}}.airspace.com/api/public/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "91a633e1-e389-475a-ad82-cc28b7795a4f",
+    "name": "Airspace API Documentation Address Books API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Introduction\nAirspace's V2 API is a RESTful API. Our API accepts JSON-encoded request bodies, returns JSON-encoded\nresponses, and uses standard HTTP response codes, authentication, and verbs. With this API you can build\nintegrations for Order Creation, Quote Generation, Label Generation, and Active Shipment Monitoring.\n## Getting started with the Airspace API\n1. Check with your Airspace Account Manager representative if you have an account at Airspace.\n2. Reach out to integrations@airspace.com to get an API token. Once a token is generated for your account it will not expire.\n3. We will configure your account’s access to use our test environment. Use authorization type as **bearer token** before starting to make any requests.\n4. **[Optional]** We can also configure [webhooks](#section/Webhooks) to send status updates back to your system.\n5. Once development is complete reach out to us for end to end testing.\n6. After a few successful rounds of testing we will go live with your integration.\n## Environments\nEnvironment | URL | Description\n---|---|---\nProduction | https://api.airspace.com/api/public/v2 | For production use. Communicates with our production environment. Requires configuration.\nTest | https://apitest.airspace.com/api/public/v2 | For development and testing. Generally behaves the same as production.\n## Example Request\n```\n  curl -X POST \"https://apitest.airspace.com/api/public/v2/orders\"\n       -H \"accept: application/json\"\n       -H \"Content-Type: application/json\"\n       -H \"Authorization: Bearer **YOUR_API_KEY_HERE**\"\n       -d @api-data.json\n```\n## Response Codes\nAirspace uses conventional HTTP response codes to indicate the success or failure of an API request. In general:\n  - Codes in the 2xx range indicate success.\n  - Codes in the 4xx range indicate an error that failed given the information provided (e.g., a required parameter was omitted, a charge failed, etc.).\n  - Codes in the 5xx range indicate an error with Airspace's servers (these are rare).\n# Authentication\nYou will need an API key to access the Airspace API. Please contact integrations@airspace.com for your key.\nNote: Once you have a token it will never expire.\n# Webhooks\nAirspace can send webhooks programmatically to inform you about updates to your Order. A webhook is an HTTP request used to provide push notifications rather than making API calls to know the status of your Order. Webhooks can be triggered by an event, for example, a change in order status. When this change occurs, Airspace makes an HTTP request to your URL configured for the webhook.\n\nTo receive Airspace webhooks, set up a dedicated endpoint on your server as a webhook listener that can receive POST requests, then provide this endpoint URL to Airspace. Contact integrations@airspace.com to create or change your subscriptions.\n\n## Webhook Payload Structure\n\nEach webhook notification sent to your endpoint contains a complete payload with order details and event information. The payload structure varies dynamically based on the order state:\n\n- **Regular Status Updates**: Milestone events for normal order progression (picked up, in transit, delivered, etc.)\n- **Order Cancellations**: Problem events with cancellation details and error codes\n- **Order Delays**: Problem events with delay information and updated ETAs\n\n## Example Webhook Payloads\n\n### Regular Status Update\n```json\n{\n  \"message\": \"Order status is now in_route_to_destination. Contact integrations@airspace.com to manage webhook subscriptions.\",\n  \"events\": [{\n    \"milestone\": {},\n    \"occurred_at\": \"2026-01-22T15:30:45.123Z\"\n  }],\n  \"errors\": null,\n  \"updated_order_keys\": [\"status\"],\n  \"order\": {\n    \"tracking_id\": \"ATXYZ123ABC\",\n    \"tracking_url\": \"https://apitest.airspace.com/asap/tracking/ATXYZ123ABC\",\n    \"order_number\": 9000001,\n    \"status\": \"in_route_to_destination\",\n    \"current_segment\": \"delivery_drive\",\n    \"company_name\": \"Example Company\",\n    ...\n  }\n}\n```\n\n### Order Delay\n```json\n{\n  \"message\": \"Order has encountered a delay.\",\n  \"events\": [{\n    \"event_type\": \"delay\",\n    \"problem\": {\n      \"code\": \"2-001\",\n      \"description\": \"Changed shipment parameters\",\n      \"delivery_eta\": \"2026-01-23T16:00:00.000Z\",\n      \"note\": \"\"\n    },\n    \"occurred_at\": \"2026-01-22T14:25:30.941Z\"\n  }],\n  \"errors\": null,\n  \"updated_order_keys\": [\"estimated_pickup_time\"],\n  \"order\": { ... }\n}\n```\n\n### Order Cancellation\n```json\n{\n  \"message\": \"Order has been canceled.\",\n  \"events\": [{\n    \"problem\": {\n      \"code\": \"2-007\",\n      \"description\": \"Nothing to Pick Up or Shipment Not Ready/Uncontrollable delay at pickup\",\n      \"delivery_eta\": null,\n      \"note\": \"Shipment no longer needed\"\n    },\n    \"occurred_at\": \"2026-01-22T16:45:10.525Z\"\n  }],\n  \"errors\": null,\n  \"updated_order_keys\": [\"cancelled_at\", \"status\"],\n  \"order\": { ... }\n}\n```\n\n## Webhook Configuration Requirements\n\nTo receive webhook notifications, ensure your endpoint:\n1. Accepts POST requests with JSON payload\n2. Returns a 2xx status code on successful receipt\n3. Can handle the dynamic nature of the payload based on order state\n4. Uses the `order.tracking_id` or `order.order_number` fields to identify orders\n5. Handles all three event types (milestone, cancellation, delay)\nTo configure webhook status updates, we need the following:\n- The endpoints URL to which you want the updates sent.\n- Password to access the environment (test, production, or both).\n- Authentication method, one of:\n  - Username-password\n  - Bearer token\n  - OAuth\n- Content type (eg: JSON).\n- Request Method(PUT or POST).\n## Order Statuses\nThe following are order statues that are available to receive updates for via webhooks:\n\n**Note:** NFO/ Next Flight Out - an order that is scheduled to be shipped using a flight.\n\nStatus Code | Status Description\n---|---\n`will_call` | Creates a will call order which has not been routed and needs to be activated later for fulfillment. <br /><br />Order has an expiration time, typically 72 hours after creation. The expiration time can be changed as needed.\n`pending` | Creates a Quote which needs to be submitted for fulfillment.\n`customer_completed` | Creates an order in our system for fulfillment.\n`ops_acknowledged` | Our Operations team has acknowledged/reviewed the order.\n`available_for_pickup` | A driver has been assigned to the order.\n`in_route_to_pickup` | The driver is en route to pickup the order.\n`arrived_at_pickup_location` | The driver has arrived at the pickup location.\n`in_route_to_destination` | The driver has picked up the order and is en route to the airport (only for NFO orders).\n`accepted_by_airline` | The order has been successfully delivered to the airport and accepted the by the airline (only for NFO orders).\n`verified_onboard` | The order has been on boarded onto the plane (only for NFO orders).\n`reached_destination_airport` | The order has reached the destination airport (only for NFO orders).\n`available_for_recovery` | A driver has been assigned and the order is available to be picked up from the destination airport (only for for NFO orders).\n`in_route_to_recovery` | The driver is en route to pick up the order from the destination airport (only for NFO orders).\n`arrived_at_recovery_location` | The driver has arrived to pick up the order from the destination airport (only for NFO orders).\n`recovered_from_airline` | The driver has picked up the order from the destination airport and is en route to deliver the order to the destination address (only for NFO orders).\n`arrived_at_destination` / `arrived_at_destination2` | The driver has arrived at the destination address. <br /><br /> **NOTE:** arrived_at_destination is for drive only orders, arrived_at_destination2 is only for NFO orders.\n`delivered` | The order has been delivered.\n`admin_canceled` | The order has been canceled.\n",
+      "type": "text/plain"
+    }
+  }
+}

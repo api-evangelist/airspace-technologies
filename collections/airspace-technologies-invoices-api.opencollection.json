@@ -1,0 +1,130 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Airspace API Documentation Address Books Invoices API",
+    "version": "2.6.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Invoices",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Invoices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{environment}.airspace.com/api/public/v2/invoices",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Desired page number"
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query",
+                "description": "Amount of invoices to include in each page"
+              },
+              {
+                "name": "from_created_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "to_created_at",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[from_created_at]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[to_created_at]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[references][reference]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[references][context]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[pieces][barcode]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[pieces][barcode_type]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[pieces][commodity]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[has_dangerous_goods]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[should_hold_at_airlines]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order[service_type]",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a list of Invoices"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{environment}.airspace.com/api/public/v2/invoices/:tracking_id",
+            "params": [
+              {
+                "name": "tracking_id",
+                "value": "",
+                "type": "path",
+                "description": "Tracking ID or Order Number of an order"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns invoice object"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

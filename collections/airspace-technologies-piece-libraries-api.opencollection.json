@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Airspace API Documentation Address Books Piece Libraries API",
+    "version": "2.6.2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Piece Libraries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Piece Libraries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{environment}.airspace.com/api/public/v2/piece_libraries",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a list of available PieceLibrary items from our system."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
