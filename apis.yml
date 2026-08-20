@@ -38,6 +38,15 @@ tags:
 - Freight
 - Supply Chain
 - Transportation
+- Webhook
+- Order
+tags_raw:
+- Company
+- Logistics
+- Shipping
+- Freight
+- Supply Chain
+- Transportation
 - Webhooks
 - Orders
 apis:
@@ -77,6 +86,8 @@ apis:
   humanURL: https://api.airspace.com/api-docs/v3
   baseURL: https://api.airspace.com/api/public/v3
   tags:
+  - Order
+  tags_raw:
   - Orders
   properties:
   - type: OpenAPI
