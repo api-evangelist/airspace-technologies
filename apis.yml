@@ -8,6 +8,18 @@ description: >-
   asynchronous, authenticates with a non-expiring bearer token, paginates lists with
   page/page_limit, and pushes milestone, delay, and cancellation updates over webhooks
   correlated by request_id.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: self-serve
