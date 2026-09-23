@@ -1,0 +1,27 @@
+# Front Door AI Index — airspace-technologies — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: airspace-technologies
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.airspace.com
+  final_host: www.airspace.com
+  ownership: own
+  owner: airspace-technologies
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 6
+  host_score: 6
+  density: 11.9
+  words: 504
+  tiers:
+    agentic: 0
+    core: 6
+    model: 0
+  ambiguous: 1
+  top_terms:
+    AI: 4
+    machine learning: 2
+    agent: 1

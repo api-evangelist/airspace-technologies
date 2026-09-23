@@ -1,24 +1,35 @@
 {
   "provider": "airspace-technologies",
   "sources": [
-    "airspace-technologies-address-books-api-openapi.yml",
-    "airspace-technologies-invoices-api-openapi.yml",
-    "airspace-technologies-labels-api-openapi.yml",
-    "airspace-technologies-orders-api-openapi.yml",
-    "airspace-technologies-piece-libraries-api-openapi.yml",
-    "airspace-technologies-quotes-api-openapi.yml"
+    "_original/airspace-technologies-v2-openapi.json",
+    "_original/airspace-technologies-v3-openapi.json"
   ],
   "outputs": [
-    "airspace-technologies-address-books-api-openapi.yml",
     "airspace-technologies-invoices-api-openapi.yml",
     "airspace-technologies-labels-api-openapi.yml",
     "airspace-technologies-orders-api-openapi.yml",
     "airspace-technologies-piece-libraries-api-openapi.yml",
-    "airspace-technologies-quotes-api-openapi.yml"
+    "airspace-technologies-quotes-api-openapi.yml",
+    "airspace-technologies-address-books-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "airspace-technologies-v2-openapi.json: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "airspace-technologies-v3-openapi.json: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "tag 'Invoices' spans 2 source specs (airspace-technologies-v2-openapi.json, airspace-technologies-v3-openapi.json): per-path servers applied",
+    "tag 'Orders' spans 2 source specs (airspace-technologies-v2-openapi.json, airspace-technologies-v3-openapi.json): per-path servers applied",
+    "tag 'Piece Libraries' spans 2 source specs (airspace-technologies-v2-openapi.json, airspace-technologies-v3-openapi.json): per-path servers applied",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "airspace-technologies-address-books-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airspace-technologies-invoices-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airspace-technologies-labels-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airspace-technologies-orders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airspace-technologies-piece-libraries-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "airspace-technologies-quotes-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

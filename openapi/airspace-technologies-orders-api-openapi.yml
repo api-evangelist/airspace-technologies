@@ -1,12 +1,19 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Airspace API Documentation Address Books Orders API
-  description: "# Introduction\nAirspace's V2 API is a RESTful API. Our API accepts JSON-encoded request bodies, returns JSON-encoded\nresponses, and uses standard HTTP response codes, authentication, and verbs. With this API you can build\nintegrations for Order Creation, Quote Generation, Label Generation, and Active Shipment Monitoring.\n## Getting started with the Airspace API\n1. Check with your Airspace Account Manager representative if you have an account at Airspace.\n2. Reach out to integrations@airspace.com to get an API token. Once a token is generated for your account it will not expire.\n3. We will configure your account’s access to use our test environment. Use authorization type as **bearer token** before starting to make any requests.\n4. **[Optional]** We can also configure [webhooks](#section/Webhooks) to send status updates back to your system.\n5. Once development is complete reach out to us for end to end testing.\n6. After a few successful rounds of testing we will go live with your integration.\n## Environments\nEnvironment | URL | Description\n---|---|---\nProduction | https://api.airspace.com/api/public/v2 | For production use. Communicates with our production environment. Requires configuration.\nTest | https://apitest.airspace.com/api/public/v2 | For development and testing. Generally behaves the same as production.\n## Example Request\n```\n  curl -X POST \"https://apitest.airspace.com/api/public/v2/orders\"\n       -H \"accept: application/json\"\n       -H \"Content-Type: application/json\"\n       -H \"Authorization: Bearer **YOUR_API_KEY_HERE**\"\n       -d @api-data.json\n```\n## Response Codes\nAirspace uses conventional HTTP response codes to indicate the success or failure of an API request. In general:\n  - Codes in the 2xx range indicate success.\n  - Codes in the 4xx range indicate an error that failed given the information provided (e.g., a required parameter was omitted, a charge failed, etc.).\n  - Codes in the 5xx range indicate an error with Airspace's servers (these are rare).\n# Authentication\nYou will need an API key to access the Airspace API. Please contact integrations@airspace.com for your key.\nNote: Once you have a token it will never expire.\n# Webhooks\nAirspace can send webhooks programmatically to inform you about updates to your Order. A webhook is an HTTP request used to provide push notifications rather than making API calls to know the status of your Order. Webhooks can be triggered by an event, for example, a change in order status. When this change occurs, Airspace makes an HTTP request to your URL configured for the webhook.\n\nTo receive Airspace webhooks, set up a dedicated endpoint on your server as a webhook listener that can receive POST requests, then provide this endpoint URL to Airspace. Contact integrations@airspace.com to create or change your subscriptions.\n\n## Webhook Payload Structure\n\nEach webhook notification sent to your endpoint contains a complete payload with order details and event information. The payload structure varies dynamically based on the order state:\n\n- **Regular Status Updates**: Milestone events for normal order progression (picked up, in transit, delivered, etc.)\n- **Order Cancellations**: Problem events with cancellation details and error codes\n- **Order Delays**: Problem events with delay information and updated ETAs\n\n## Example Webhook Payloads\n\n### Regular Status Update\n```json\n{\n  \"message\": \"Order status is now in_route_to_destination. Contact integrations@airspace.com to manage webhook subscriptions.\",\n  \"events\": [{\n    \"milestone\": {},\n    \"occurred_at\": \"2026-01-22T15:30:45.123Z\"\n  }],\n  \"errors\": null,\n  \"updated_order_keys\": [\"status\"],\n  \"order\": {\n    \"tracking_id\": \"ATXYZ123ABC\",\n    \"tracking_url\": \"https://apitest.airspace.com/asap/tracking/ATXYZ123ABC\",\n    \"order_number\": 9000001,\n    \"status\": \"in_route_to_destination\",\n    \"current_segment\": \"delivery_drive\",\n    \"company_name\": \"Example Company\",\n    ...\n  }\n}\n```\n\n### Order Delay\n```json\n{\n  \"message\": \"Order has encountered a delay.\",\n  \"events\": [{\n    \"event_type\": \"delay\",\n    \"problem\": {\n      \"code\": \"2-001\",\n      \"description\": \"Changed shipment parameters\",\n      \"delivery_eta\": \"2026-01-23T16:00:00.000Z\",\n      \"note\": \"\"\n    },\n    \"occurred_at\": \"2026-01-22T14:25:30.941Z\"\n  }],\n  \"errors\": null,\n  \"updated_order_keys\": [\"estimated_pickup_time\"],\n  \"order\": { ... }\n}\n```\n\n### Order Cancellation\n```json\n{\n  \"message\": \"Order has been canceled.\",\n  \"events\": [{\n    \"problem\": {\n      \"code\": \"2-007\",\n      \"description\": \"Nothing to Pick Up or Shipment Not Ready/Uncontrollable delay at pickup\",\n      \"delivery_eta\": null,\n      \"note\": \"Shipment no longer needed\"\n    },\n    \"occurred_at\": \"2026-01-22T16:45:10.525Z\"\n  }],\n  \"errors\": null,\n  \"updated_order_keys\": [\"cancelled_at\", \"status\"],\n  \"order\": { ... }\n}\n```\n\n## Webhook Configuration Requirements\n\nTo receive webhook notifications, ensure your endpoint:\n1. Accepts POST requests with JSON payload\n2. Returns a 2xx status code on successful receipt\n3. Can handle the dynamic nature of the payload based on order state\n4. Uses the `order.tracking_id` or `order.order_number` fields to identify orders\n5. Handles all three event types (milestone, cancellation, delay)\nTo configure webhook status updates, we need the following:\n- The endpoints URL to which you want the updates sent.\n- Password to access the environment (test, production, or both).\n- Authentication method, one of:\n  - Username-password\n  - Bearer token\n  - OAuth\n- Content type (eg: JSON).\n- Request Method(PUT or POST).\n## Order Statuses\nThe following are order statues that are available to receive updates for via webhooks:\n\n**Note:** NFO/ Next Flight Out - an order that is scheduled to be shipped using a flight.\n\nStatus Code | Status Description\n---|---\n`will_call` | Creates a will call order which has not been routed and needs to be activated later for fulfillment. <br /><br />Order has an expiration time, typically 72 hours after creation. The expiration time can be changed as needed.\n`pending` | Creates a Quote which needs to be submitted for fulfillment.\n`customer_completed` | Creates an order in our system for fulfillment.\n`ops_acknowledged` | Our Operations team has acknowledged/reviewed the order.\n`available_for_pickup` | A driver has been assigned to the order.\n`in_route_to_pickup` | The driver is en route to pickup the order.\n`arrived_at_pickup_location` | The driver has arrived at the pickup location.\n`in_route_to_destination` | The driver has picked up the order and is en route to the airport (only for NFO orders).\n`accepted_by_airline` | The order has been successfully delivered to the airport and accepted the by the airline (only for NFO orders).\n`verified_onboard` | The order has been on boarded onto the plane (only for NFO orders).\n`reached_destination_airport` | The order has reached the destination airport (only for NFO orders).\n`available_for_recovery` | A driver has been assigned and the order is available to be picked up from the destination airport (only for for NFO orders).\n`in_route_to_recovery` | The driver is en route to pick up the order from the destination airport (only for NFO orders).\n`arrived_at_recovery_location` | The driver has arrived to pick up the order from the destination airport (only for NFO orders).\n`recovered_from_airline` | The driver has picked up the order from the destination airport and is en route to deliver the order to the destination address (only for NFO orders).\n`arrived_at_destination` / `arrived_at_destination2` | The driver has arrived at the destination address. <br /><br /> **NOTE:** arrived_at_destination is for drive only orders, arrived_at_destination2 is only for NFO orders.\n`delivered` | The order has been delivered.\n`admin_canceled` | The order has been canceled.\n"
-  version: 2.6.2
+  title: Airspace Technologies Orders API
   x-logo:
     url: https://www.airspacetechnologies.com/hubfs/Updated%20logos/Airspace%20horizontal%20logotype%20black%20and%20green%20no%20background%20011321%20(1).png
+  version: '1.0'
+  description: 'Operations tagged Orders across 2 of this provider''s published API definitions: airspace-technologies-v2-openapi.json, airspace-technologies-v3-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://{environment}.airspace.com/api/public/v2
+  variables:
+    environment:
+      default: apitest
+      enum:
+      - api
+      - apitest
+- url: https://{environment}.airspace.com/api/public/v3
   variables:
     environment:
       default: apitest
@@ -415,9 +422,7 @@ paths:
       description: 'Create a new order
 
 
-        **NOTE:** After a request has been accepted, `pickup_time` will be returned as the actual time an Order is picked up.''
-
-        '
+        **NOTE:** After a request has been accepted, `pickup_time` will be returned as the actual time an Order is picked up.'''
       responses:
         '201':
           description: Order successfully created
@@ -625,6 +630,14 @@ paths:
             schema:
               $ref: '#/components/schemas/order'
         required: true
+    servers:
+    - url: https://{environment}.airspace.com/api/public/v2
+      variables:
+        environment:
+          default: apitest
+          enum:
+          - api
+          - apitest
   /orders/{tracking_id}:
     parameters:
     - name: tracking_id
@@ -857,7 +870,38 @@ paths:
       tags:
       - Orders
       operationId: updateOrder
-      description: "If the order is in an updatable status (`will_call`, `pending`, `customer_completed`) updates are allowed in\nspecific scenarios.\n- If order status is `will_call` or `pending` you can update any attribute that can be created.\n- If a driver has been assigned to the order, it is up to our Operations team to manually approve your request.\n- If a driver has not been assigned:\n  - We allow updates to piece dimensions before pickup, as long as the assigned vehicle type is Car.\n  - We don’t allow updates to orders if vehicle type is Van or Truck.\n  - We allow updates to Point of Contact (for either address) and References up until driver solicitation.\n- After an order has been submitted we don't allow:\n  - Editing `has_dangerous_goods` flag\n  - Adding or removing a piece\n\nContact operations if additional updates are needed.\n\nAbove conditions are subject to change without prior notice.\n\n**NOTE:** Only provide attributes to update. If updating pieces or references you must include all items.\nAll previous pieces or references will be removed and replaced with new objects.\n"
+      description: 'If the order is in an updatable status (`will_call`, `pending`, `customer_completed`) updates are allowed in
+
+        specific scenarios.
+
+        - If order status is `will_call` or `pending` you can update any attribute that can be created.
+
+        - If a driver has been assigned to the order, it is up to our Operations team to manually approve your request.
+
+        - If a driver has not been assigned:
+
+        - We allow updates to piece dimensions before pickup, as long as the assigned vehicle type is Car.
+
+        - We don’t allow updates to orders if vehicle type is Van or Truck.
+
+        - We allow updates to Point of Contact (for either address) and References up until driver solicitation.
+
+        - After an order has been submitted we don''t allow:
+
+        - Editing `has_dangerous_goods` flag
+
+        - Adding or removing a piece
+
+
+        Contact operations if additional updates are needed.
+
+
+        Above conditions are subject to change without prior notice.
+
+
+        **NOTE:** Only provide attributes to update. If updating pieces or references you must include all items.
+
+        All previous pieces or references will be removed and replaced with new objects.'
       responses:
         '200':
           description: Successful message and current state of order
@@ -1530,9 +1574,7 @@ paths:
 
         When an order is beyond ops_acknowledged, it cannot be canceled through the API. Contact Operations to
 
-        cancel the order in that scenario.
-
-        '
+        cancel the order in that scenario.'
       responses:
         '200':
           description: The order is now cancelled
@@ -2110,6 +2152,14 @@ paths:
             application/json:
               example:
                 error: Not Found
+    servers:
+    - url: https://{environment}.airspace.com/api/public/v2
+      variables:
+        environment:
+          default: apitest
+          enum:
+          - api
+          - apitest
   /orders/{tracking_id}/documents:
     post:
       summary: Add documents to an Order
@@ -2523,6 +2573,14 @@ paths:
                   description: Designate if the document should be shown to the driver
               required:
               - document
+    servers:
+    - url: https://{environment}.airspace.com/api/public/v2
+      variables:
+        environment:
+          default: apitest
+          enum:
+          - api
+          - apitest
   /orders/{tracking_id}/activate_will_call:
     patch:
       summary: Activate a will call Order
@@ -2934,6 +2992,14 @@ paths:
                   $ref: '#/components/schemas/shipment_viability'
               required: []
               description: null
+    servers:
+    - url: https://{environment}.airspace.com/api/public/v2
+      variables:
+        environment:
+          default: apitest
+          enum:
+          - api
+          - apitest
   /orders/events:
     get:
       summary: Events for Orders
@@ -3128,6 +3194,14 @@ paths:
             application/json:
               example:
                 error: Unauthorized
+    servers:
+    - url: https://{environment}.airspace.com/api/public/v2
+      variables:
+        environment:
+          default: apitest
+          enum:
+          - api
+          - apitest
   /orders/{tracking_id}/events:
     parameters:
     - name: tracking_id
@@ -3209,6 +3283,14 @@ paths:
             application/json:
               example:
                 error: Not Found
+    servers:
+    - url: https://{environment}.airspace.com/api/public/v2
+      variables:
+        environment:
+          default: apitest
+          enum:
+          - api
+          - apitest
   /orders/{tracking_id}/activate:
     parameters:
     - name: tracking_id
@@ -3232,9 +3314,7 @@ paths:
 
         **NOTE:** Can only provide paramaters pickup_time and/or shipment_viability if the order is a will call
 
-        order.
-
-        '
+        order.'
       responses:
         '202':
           description: Order activation request received
@@ -3261,6 +3341,14 @@ paths:
                   $ref: '#/components/schemas/shipment_viability'
               required: []
               description: null
+    servers:
+    - url: https://{environment}.airspace.com/api/public/v3
+      variables:
+        environment:
+          default: apitest
+          enum:
+          - api
+          - apitest
   /orders/{tracking_id}/test_order_progression:
     parameters:
     - name: tracking_id
@@ -3277,7 +3365,7 @@ paths:
       tags:
       - Orders
       operationId: testProgressOrder
-      description: 'Will progress an order through the test environment. If the environment is not TESTa 409 conflict is returned. '
+      description: Will progress an order through the test environment. If the environment is not TESTa 409 conflict is returned.
       responses:
         '200':
           description: Test order progression request received.
@@ -3511,6 +3599,14 @@ paths:
               required: progress
               description: null
         required: true
+    servers:
+    - url: https://{environment}.airspace.com/api/public/v3
+      variables:
+        environment:
+          default: apitest
+          enum:
+          - api
+          - apitest
   /orders/quotes:
     post:
       summary: Create a Quote
@@ -3649,6 +3745,14 @@ paths:
               - has_dangerous_goods
               description: null
         required: true
+    servers:
+    - url: https://{environment}.airspace.com/api/public/v3
+      variables:
+        environment:
+          default: apitest
+          enum:
+          - api
+          - apitest
   /orders/quotes/{tracking_id}:
     parameters:
     - name: tracking_id
@@ -3835,6 +3939,14 @@ paths:
             application/json:
               example:
                 error: Unauthorized
+    servers:
+    - url: https://{environment}.airspace.com/api/public/v3
+      variables:
+        environment:
+          default: apitest
+          enum:
+          - api
+          - apitest
   /orders/will_call:
     post:
       summary: Create a will call Order
@@ -3967,6 +4079,14 @@ paths:
                   $ref: '#/components/schemas/shipment_viability'
               description: null
         required: true
+    servers:
+    - url: https://{environment}.airspace.com/api/public/v3
+      variables:
+        environment:
+          default: apitest
+          enum:
+          - api
+          - apitest
   /orders/will_call/{tracking_id}:
     parameters:
     - name: tracking_id
@@ -3991,9 +4111,7 @@ paths:
 
         **NOTE:** Only provide attributes to update. If updating pieces or references you must include all items.
 
-        All previous pieces or references will be removed and replaced with new objects.
-
-        '
+        All previous pieces or references will be removed and replaced with new objects.'
       responses:
         '202':
           description: Will call order update request received.
@@ -4130,8 +4248,25 @@ paths:
                   $ref: '#/components/schemas/shipment_viability'
               description: null
         required: true
+    servers:
+    - url: https://{environment}.airspace.com/api/public/v3
+      variables:
+        environment:
+          default: apitest
+          enum:
+          - api
+          - apitest
 components:
   schemas:
+    geofence_miles_delivery:
+      type: object
+      properties:
+        geofence_miles_delivery:
+          type: integer
+          example: 10
+          description: Mileage range to trigger notifications.
+      required: []
+      description: null
     shipment_viability:
       type: object
       properties:
@@ -4160,72 +4295,6 @@ components:
         configured for it. Please contact your Account Manager for details.
 
         '
-    email_notification:
-      allOf:
-      - type: object
-        description: For each email notification a geofence trigger can be specified for distance from pickup or distance to delivery.
-        properties:
-          email:
-            type: string
-            example: alerts@airspace.com
-            description: Email address used to receive email notifications.
-          phone_number:
-            type:
-            - string
-            - integer
-            example: 619-867-5309
-            description: 'Phone number used to receive sms notifications (either string or integer).
-
-
-              Examples:
-
-              - 6198675309
-
-              - 619-867-5309
-
-              - (619)867-5309
-
-              - (619) 867-5309
-
-              - (619)-867-5309
-
-              '
-          exception_email:
-            type: boolean
-            example: true
-            description: Receive email notifications for exceptions.
-          statuses:
-            type: array
-            items:
-              type: string
-              enum:
-              - customer_completed
-              - ops_acknowledged
-              - auto_dispatch_started
-              - in_route_to_pickup
-              - arrived_at_pickup_location
-              - in_route_to_tender
-              - arrived_at_tender
-              - accepted_by_airline
-              - flight_departed
-              - flight_arrived
-              - reached_destination_airport
-              - in_route_to_recovery
-              - arrived_at_recovery_location
-              - recovered_from_airline
-              - in_route_to_destination
-              - arrived_at_destination
-              - package_accepted
-            description: Order statuses to receive updates for.
-            example:
-            - customer_completed
-            - ops_acknowledged
-            - auto_dispatch_started
-        required:
-        - email
-      oneOf:
-      - $ref: '#/components/schemas/geofence_miles_delivery'
-      - $ref: '#/components/schemas/geofence_miles_pickup'
     destination_address:
       type: object
       properties:
@@ -4304,42 +4373,9 @@ components:
       - company
       - contact
       description: Destination address for order
-    reference:
+    pickup_address:
       type: object
       properties:
-        reference:
-          type: string
-          example: PO-1234
-          description: Reference number or any additional identifying information
-        context:
-          type: string
-          example: PO number
-          description: 'Identifying name for the associated reference number.
-
-
-            Note: If you have a preconfigured custom reference, we will match the name to the context here. If the custom reference is a required field this value will become required.
-
-            '
-      required:
-      - reference
-      description: null
-    pickup_time:
-      type: string
-      example: '2022-02-25 02:25:00'
-      description: 'Send a value in this key only if you want to specify a pickup time.
-
-        - For future orders, the value should be at least two hours in the future (in the timezone of the pickup location).
-
-        - For immediate pickup, leave blank.
-
-        '
-    pickup_address_2:
-      type: object
-      properties:
-        address_book_guid:
-          type: string
-          example: ATM940AWEI
-          description: The GUID of an AddressBook record from which to pull stored address attributes.
         company:
           type: string
           example: TMB
@@ -4415,139 +4451,25 @@ components:
       - company
       - contact
       description: Pickup address for order
-    upid:
+    reference:
       type: object
       properties:
-        type:
+        reference:
           type: string
-          example: 'PO #'
-          description: An identifier specified on the package to verify we are picking up the correct piece when an Airspace label is not used.
-        value:
+          example: PO-1234
+          description: Reference number or any additional identifying information
+        context:
           type: string
-          example: PO-12345
-          description: The value of the specific identifier.
-      required:
-      - type
-      - value
-      description: An identifier specified on the package to verify we are picking up the correct piece when an Airspace label is not used.
-    delivery_address:
-      type: object
-      properties:
-        address_book_guid:
-          type: string
-          example: ATM940AWEI
-          description: The GUID of an AddressBook record from which to pull stored address attributes.
-        company:
-          type: string
-          example: TMB
-          description: Company name
-        street:
-          type: string
-          example: 151 N Main Street
-          description: Street address
-        street2:
-          type: string
-          example: ''
-          description: Additional street information
-        street3:
-          type: string
-          example: ''
-          description: Additional street information (only valid for non-US addresses)
-        city:
-          type: string
-          example: Sheridan
-          description: City
-        state:
-          type: string
-          example: WY
-          description: State
-        zip:
-          type: string
-          example: '82801'
-          description: Zip code
-        country:
-          type: string
-          example: US
-          description: ISO 3166-1 alpha-2 country abbreviation
-          enum:
-          - US
-          - CA
-          - AU
-          - GB
-          - DE
-          - BR
-          - FR
-          - JP
-          - RU
-          - IN
-          - ID
-          - IT
-          - ES
-          - MX
-          - 'NO'
-          - SE
-          - CO
-          - CN
-          - TR
-          - NZ
-        instructions:
-          type: string
-          example: 'Use Gate Code: B2578*. Park in rear by loading docks.'
-          description: Special instructions for the driver to execute at the address
-        contact:
-          $ref: '#/components/schemas/contact'
-        custom_attributes:
-          type: array
-          items:
-            $ref: '#/components/schemas/custom_attributes'
-          example:
-          - label: Requires Dock High?
-            option: true
-          - label: Requires Lift Gate?
-            option: 'true'
-          description: "Attributes are custom fields that will allow you to communicate specific requirements about your orders. They can be set up on Order level as well as on Address level. Additional charges may apply for some of the configured attributes, please clarify with your Account Manager.\n\nExamples:\n  - If you require ‘Airspace Protection Plan’ we can setup an order level custom attribute that will allow you to specify the dollar amount for the plan on the order.\n  - If a TSA Certified Driver is required by any of the address locations, an address level custom attribute will allow you to specify this request on the address.\n\nThis feature is only available if your account is configured for it. Please contact your Account Manager for details.\n"
-      required:
-      - street
-      - city
-      - company
-      - contact
-      description: Delivery address for order
-    contact:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Jenny Jenny
-          description: Contact name
-        phone_number:
-          type:
-          - string
-          - integer
-          example: 619-867-5309
-          description: 'Phone number (either string or integer).
+          example: PO number
+          description: 'Identifying name for the associated reference number.
 
 
-            Examples:
-
-            - 6198675309
-
-            - 619-867-5309
-
-            - (619)867-5309
-
-            - (619) 867-5309
-
-            - (619)-867-5309
+            Note: If you have a preconfigured custom reference, we will match the name to the context here. If the custom reference is a required field this value will become required.
 
             '
-        phone_country_code:
-          type: string
-          example: '1'
-          description: International country code
       required:
-      - name
-      - phone_number
-      description: Location contact
+      - reference
+      description: null
     order:
       type: object
       properties:
@@ -4656,50 +4578,133 @@ components:
       - pieces
       - references
       description: null
-    custom_attributes:
+    email_notification:
+      allOf:
+      - type: object
+        description: For each email notification a geofence trigger can be specified for distance from pickup or distance to delivery.
+        properties:
+          email:
+            type: string
+            example: alerts@airspace.com
+            description: Email address used to receive email notifications.
+          phone_number:
+            type:
+            - string
+            - integer
+            example: 619-867-5309
+            description: 'Phone number used to receive sms notifications (either string or integer).
+
+
+              Examples:
+
+              - 6198675309
+
+              - 619-867-5309
+
+              - (619)867-5309
+
+              - (619) 867-5309
+
+              - (619)-867-5309
+
+              '
+          exception_email:
+            type: boolean
+            example: true
+            description: Receive email notifications for exceptions.
+          statuses:
+            type: array
+            items:
+              type: string
+              enum:
+              - customer_completed
+              - ops_acknowledged
+              - auto_dispatch_started
+              - in_route_to_pickup
+              - arrived_at_pickup_location
+              - in_route_to_tender
+              - arrived_at_tender
+              - accepted_by_airline
+              - flight_departed
+              - flight_arrived
+              - reached_destination_airport
+              - in_route_to_recovery
+              - arrived_at_recovery_location
+              - recovered_from_airline
+              - in_route_to_destination
+              - arrived_at_destination
+              - package_accepted
+            description: Order statuses to receive updates for.
+            example:
+            - customer_completed
+            - ops_acknowledged
+            - auto_dispatch_started
+        required:
+        - email
+      oneOf:
+      - $ref: '#/components/schemas/geofence_miles_delivery'
+      - $ref: '#/components/schemas/geofence_miles_pickup'
+    contact:
       type: object
       properties:
-        label:
+        name:
           type: string
-          description: Label for the custom attribute
-        option:
+          example: Jenny Jenny
+          description: Contact name
+        phone_number:
           type:
           - string
-          - boolean
-          description: 'Option for the custom attribute. Please contact your account manager for configured options.
+          - integer
+          example: 619-867-5309
+          description: 'Phone number (either string or integer).
+
+
+            Examples:
+
+            - 6198675309
+
+            - 619-867-5309
+
+            - (619)867-5309
+
+            - (619) 867-5309
+
+            - (619)-867-5309
 
             '
-        weight:
-          type: float
-          description: Weight for the custom attribute
-        weight_unit:
+        phone_country_code:
           type: string
-          description: Weight unit for the custom attribute. Will default to company configured weight unit if not provided.
-          enum:
-          - lbs
-          - kg
-        amount:
-          type: float
-          description: Amount for the custom attribute
-        currency_code:
-          type: string
-          description: Currency code for the custom attribute. Will default to company configured currency code if not provided.
-          enum:
-          - USD
-          - CAD
-          - EUR
-          - GBP
-          - AUD
-          - NZD
-          - CHF
-          - DKK
-          - NOK
-          - SEK
-          - SGD
-          - CNY
+          example: '1'
+          description: International country code
       required:
-      - label
-      description: null
+      - name
+      - phone_number
+      description: Location contact
+    upid:
+      type: object
+      properties:
+        type:
+          type: string
+          example: 'PO #'
+          description: An identifier specified on the package to verify we are picking up the correct piece when an Airspace label is not used.
+        value:
+          type: string
+          example: PO-12345
+          description: The value of the specific identifier.
+      required:
+      - type
+      - value
+      description: An identifier specified on the package to verify we are picking up the correct piece when an Airspace label is not used.
+    pickup_time:
+      type: string
+      example: '2022-02-25 02:25:00'
+      description: 'Send a value in this key only if you want to specify a pickup time.
+
+        - For future orders, the value should be at least two hours in the future (in the timezone of the pickup location).
+
+        - For immediate pickup, leave blank.
+
+        '
     piece:
       type: object
       properties:
@@ -4794,6 +4799,214 @@ components:
           description: Mileage range to trigger notifications.
       required: []
       description: null
+    custom_attributes:
+      type: object
+      properties:
+        label:
+          type: string
+          description: Label for the custom attribute
+        option:
+          type:
+          - string
+          - boolean
+          description: 'Option for the custom attribute. Please contact your account manager for configured options.
+
+            '
+        weight:
+          type: float
+          description: Weight for the custom attribute
+        weight_unit:
+          type: string
+          description: Weight unit for the custom attribute. Will default to company configured weight unit if not provided.
+          enum:
+          - lbs
+          - kg
+        amount:
+          type: float
+          description: Amount for the custom attribute
+        currency_code:
+          type: string
+          description: Currency code for the custom attribute. Will default to company configured currency code if not provided.
+          enum:
+          - USD
+          - CAD
+          - EUR
+          - GBP
+          - AUD
+          - NZD
+          - CHF
+          - DKK
+          - NOK
+          - SEK
+          - SGD
+          - CNY
+      required:
+      - label
+      description: null
+    delivery_address:
+      type: object
+      properties:
+        address_book_guid:
+          type: string
+          example: ATM940AWEI
+          description: The GUID of an AddressBook record from which to pull stored address attributes.
+        company:
+          type: string
+          example: TMB
+          description: Company name
+        street:
+          type: string
+          example: 151 N Main Street
+          description: Street address
+        street2:
+          type: string
+          example: ''
+          description: Additional street information
+        street3:
+          type: string
+          example: ''
+          description: Additional street information (only valid for non-US addresses)
+        city:
+          type: string
+          example: Sheridan
+          description: City
+        state:
+          type: string
+          example: WY
+          description: State
+        zip:
+          type: string
+          example: '82801'
+          description: Zip code
+        country:
+          type: string
+          example: US
+          description: ISO 3166-1 alpha-2 country abbreviation
+          enum:
+          - US
+          - CA
+          - AU
+          - GB
+          - DE
+          - BR
+          - FR
+          - JP
+          - RU
+          - IN
+          - ID
+          - IT
+          - ES
+          - MX
+          - 'NO'
+          - SE
+          - CO
+          - CN
+          - TR
+          - NZ
+        instructions:
+          type: string
+          example: 'Use Gate Code: B2578*. Park in rear by loading docks.'
+          description: Special instructions for the driver to execute at the address
+        contact:
+          $ref: '#/components/schemas/contact'
+        custom_attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/custom_attributes'
+          example:
+          - label: Requires Dock High?
+            option: true
+          - label: Requires Lift Gate?
+            option: 'true'
+          description: "Attributes are custom fields that will allow you to communicate specific requirements about your orders. They can be set up on Order level as well as on Address level. Additional charges may apply for some of the configured attributes, please clarify with your Account Manager.\n\nExamples:\n  - If you require ‘Airspace Protection Plan’ we can setup an order level custom attribute that will allow you to specify the dollar amount for the plan on the order.\n  - If a TSA Certified Driver is required by any of the address locations, an address level custom attribute will allow you to specify this request on the address.\n\nThis feature is only available if your account is configured for it. Please contact your Account Manager for details.\n"
+      required:
+      - street
+      - city
+      - company
+      - contact
+      description: Delivery address for order
+    pickup_address_2:
+      type: object
+      properties:
+        address_book_guid:
+          type: string
+          example: ATM940AWEI
+          description: The GUID of an AddressBook record from which to pull stored address attributes.
+        company:
+          type: string
+          example: TMB
+          description: Company name
+        street:
+          type: string
+          example: 151 N Main Street
+          description: Street address
+        street2:
+          type: string
+          example: ''
+          description: Additional street information
+        street3:
+          type: string
+          example: ''
+          description: Additional street information (only valid for non-US addresses)
+        city:
+          type: string
+          example: Sheridan
+          description: City
+        state:
+          type: string
+          example: WY
+          description: State
+        zip:
+          type: string
+          example: '82801'
+          description: Zip code
+        country:
+          type: string
+          example: US
+          description: ISO 3166-1 alpha-2 country abbreviation
+          enum:
+          - US
+          - CA
+          - AU
+          - GB
+          - DE
+          - BR
+          - FR
+          - JP
+          - RU
+          - IN
+          - ID
+          - IT
+          - ES
+          - MX
+          - 'NO'
+          - SE
+          - CO
+          - CN
+          - TR
+          - NZ
+        instructions:
+          type: string
+          example: 'Use Gate Code: B2578*. Park in rear by loading docks.'
+          description: Special instructions for the driver to execute at the address
+        contact:
+          $ref: '#/components/schemas/contact'
+        custom_attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/custom_attributes'
+          example:
+          - label: Requires Dock High?
+            option: true
+          - label: Requires Lift Gate?
+            option: 'true'
+          description: "Attributes are custom fields that will allow you to communicate specific requirements about your orders. They can be set up on Order level as well as on Address level. Additional charges may apply for some of the configured attributes, please clarify with your Account Manager.\n\nExamples:\n  - If you require ‘Airspace Protection Plan’ we can setup an order level custom attribute that will allow you to specify the dollar amount for the plan on the order.\n  - If a TSA Certified Driver is required by any of the address locations, an address level custom attribute will allow you to specify this request on the address.\n\nThis feature is only available if your account is configured for it. Please contact your Account Manager for details.\n"
+      required:
+      - street
+      - city
+      - company
+      - contact
+      description: Pickup address for order
     piece_2:
       type: object
       properties:
@@ -4883,93 +5096,6 @@ components:
       - dimension_unit
       - commodity
       description: null
-    pickup_address:
-      type: object
-      properties:
-        company:
-          type: string
-          example: TMB
-          description: Company name
-        street:
-          type: string
-          example: 151 N Main Street
-          description: Street address
-        street2:
-          type: string
-          example: ''
-          description: Additional street information
-        street3:
-          type: string
-          example: ''
-          description: Additional street information (only valid for non-US addresses)
-        city:
-          type: string
-          example: Sheridan
-          description: City
-        state:
-          type: string
-          example: WY
-          description: State
-        zip:
-          type: string
-          example: '82801'
-          description: Zip code
-        country:
-          type: string
-          example: US
-          description: ISO 3166-1 alpha-2 country abbreviation
-          enum:
-          - US
-          - CA
-          - AU
-          - GB
-          - DE
-          - BR
-          - FR
-          - JP
-          - RU
-          - IN
-          - ID
-          - IT
-          - ES
-          - MX
-          - 'NO'
-          - SE
-          - CO
-          - CN
-          - TR
-          - NZ
-        instructions:
-          type: string
-          example: 'Use Gate Code: B2578*. Park in rear by loading docks.'
-          description: Special instructions for the driver to execute at the address
-        contact:
-          $ref: '#/components/schemas/contact'
-        custom_attributes:
-          type: array
-          items:
-            $ref: '#/components/schemas/custom_attributes'
-          example:
-          - label: Requires Dock High?
-            option: true
-          - label: Requires Lift Gate?
-            option: 'true'
-          description: "Attributes are custom fields that will allow you to communicate specific requirements about your orders. They can be set up on Order level as well as on Address level. Additional charges may apply for some of the configured attributes, please clarify with your Account Manager.\n\nExamples:\n  - If you require ‘Airspace Protection Plan’ we can setup an order level custom attribute that will allow you to specify the dollar amount for the plan on the order.\n  - If a TSA Certified Driver is required by any of the address locations, an address level custom attribute will allow you to specify this request on the address.\n\nThis feature is only available if your account is configured for it. Please contact your Account Manager for details.\n"
-      required:
-      - street
-      - city
-      - company
-      - contact
-      description: Pickup address for order
-    geofence_miles_delivery:
-      type: object
-      properties:
-        geofence_miles_delivery:
-          type: integer
-          example: 10
-          description: Mileage range to trigger notifications.
-      required: []
-      description: null
   securitySchemes:
     Bearer:
       description: Unique API key necessary to make API requests.
@@ -4977,3 +5103,6 @@ components:
       scheme: bearer
       name: Authorization
       in: header
+x-refined-from:
+- airspace-technologies-v2-openapi.json
+- airspace-technologies-v3-openapi.json
