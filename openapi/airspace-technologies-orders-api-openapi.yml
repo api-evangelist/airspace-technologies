@@ -4258,6 +4258,115 @@ paths:
           - apitest
 components:
   schemas:
+    piece:
+      type: object
+      properties:
+        piece_library_guid:
+          type: string
+          example: ATM94JAWEI
+          description: The GUID of a PieceLibrary record from which to optionally pull stored piece attributes.
+        do_not_rotate:
+          type: boolean
+          example: false
+          description: Optional attribute to specify if a piece should not be rotated
+        length:
+          type: string
+          example: '4'
+          description: Length of a piece
+        width:
+          type: string
+          example: '4'
+          description: Width of a piece
+        height:
+          type: string
+          example: '11'
+          description: Height of a piece
+        weight:
+          type: string
+          example: '7'
+          description: Weight of a piece
+        weight_unit:
+          type: string
+          example: lbs
+          description: Weight unit
+          enum:
+          - lb
+          - kg
+        dimension_unit:
+          type: string
+          example: in
+          description: Dimension unit
+          enum:
+          - in
+          - cm
+        commodity:
+          type: string
+          example: Test commodity
+          description: The item or material to be transported. Please check with your account management representative for a full list.
+        upids:
+          type: array
+          items:
+            $ref: '#/components/schemas/upid'
+          description: 'UPIDs, or Unique Piece Identifiers, are mainly used to identify the pieces when there is no shipping label on them.
+
+            They can also be used for pieces with non-Airspace labels. A single piece can have multiple UPIDs.
+
+
+            Please check with your account management representative to know more.
+
+            '
+        barcode:
+          type: string
+          example: '1234567890'
+          description: Barcode value of a piece.
+        barcode_type:
+          type: string
+          example: code_128
+          description: Barcode type of a piece.
+          enum:
+          - upc_e
+          - ean_13
+          - ean_8
+          - code_39
+          - code_93
+          - code_128
+          - itf
+          - qr
+          - data_matrix
+          - pdf_417
+      required:
+      - height
+      - length
+      - width
+      - weight
+      - weight_unit
+      - dimension_unit
+      - commodity
+      description: null
+    upid:
+      type: object
+      properties:
+        type:
+          type: string
+          example: 'PO #'
+          description: An identifier specified on the package to verify we are picking up the correct piece when an Airspace label is not used.
+        value:
+          type: string
+          example: PO-12345
+          description: The value of the specific identifier.
+      required:
+      - type
+      - value
+      description: An identifier specified on the package to verify we are picking up the correct piece when an Airspace label is not used.
+    geofence_miles_pickup:
+      type: object
+      properties:
+        geofence_miles_pickup:
+          type: integer
+          example: 25
+          description: Mileage range to trigger notifications.
+      required: []
+      description: null
     geofence_miles_delivery:
       type: object
       properties:
@@ -4267,6 +4376,181 @@ components:
           description: Mileage range to trigger notifications.
       required: []
       description: null
+    contact:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Jenny Jenny
+          description: Contact name
+        phone_number:
+          type:
+          - string
+          - integer
+          example: 619-867-5309
+          description: 'Phone number (either string or integer).
+
+
+            Examples:
+
+            - 6198675309
+
+            - 619-867-5309
+
+            - (619)867-5309
+
+            - (619) 867-5309
+
+            - (619)-867-5309
+
+            '
+        phone_country_code:
+          type: string
+          example: '1'
+          description: International country code
+      required:
+      - name
+      - phone_number
+      description: Location contact
+    reference:
+      type: object
+      properties:
+        reference:
+          type: string
+          example: PO-1234
+          description: Reference number or any additional identifying information
+        context:
+          type: string
+          example: PO number
+          description: 'Identifying name for the associated reference number.
+
+
+            Note: If you have a preconfigured custom reference, we will match the name to the context here. If the custom reference is a required field this value will become required.
+
+            '
+      required:
+      - reference
+      description: null
+    custom_attributes:
+      type: object
+      properties:
+        label:
+          type: string
+          description: Label for the custom attribute
+        option:
+          type:
+          - string
+          - boolean
+          description: 'Option for the custom attribute. Please contact your account manager for configured options.
+
+            '
+        weight:
+          type: float
+          description: Weight for the custom attribute
+        weight_unit:
+          type: string
+          description: Weight unit for the custom attribute. Will default to company configured weight unit if not provided.
+          enum:
+          - lbs
+          - kg
+        amount:
+          type: float
+          description: Amount for the custom attribute
+        currency_code:
+          type: string
+          description: Currency code for the custom attribute. Will default to company configured currency code if not provided.
+          enum:
+          - USD
+          - CAD
+          - EUR
+          - GBP
+          - AUD
+          - NZD
+          - CHF
+          - DKK
+          - NOK
+          - SEK
+          - SGD
+          - CNY
+      required:
+      - label
+      description: null
+    email_notification:
+      allOf:
+      - type: object
+        description: For each email notification a geofence trigger can be specified for distance from pickup or distance to delivery.
+        properties:
+          email:
+            type: string
+            example: alerts@airspace.com
+            description: Email address used to receive email notifications.
+          phone_number:
+            type:
+            - string
+            - integer
+            example: 619-867-5309
+            description: 'Phone number used to receive sms notifications (either string or integer).
+
+
+              Examples:
+
+              - 6198675309
+
+              - 619-867-5309
+
+              - (619)867-5309
+
+              - (619) 867-5309
+
+              - (619)-867-5309
+
+              '
+          exception_email:
+            type: boolean
+            example: true
+            description: Receive email notifications for exceptions.
+          statuses:
+            type: array
+            items:
+              type: string
+              enum:
+              - customer_completed
+              - ops_acknowledged
+              - auto_dispatch_started
+              - in_route_to_pickup
+              - arrived_at_pickup_location
+              - in_route_to_tender
+              - arrived_at_tender
+              - accepted_by_airline
+              - flight_departed
+              - flight_arrived
+              - reached_destination_airport
+              - in_route_to_recovery
+              - arrived_at_recovery_location
+              - recovered_from_airline
+              - in_route_to_destination
+              - arrived_at_destination
+              - package_accepted
+            description: Order statuses to receive updates for.
+            example:
+            - customer_completed
+            - ops_acknowledged
+            - auto_dispatch_started
+        required:
+        - email
+      oneOf:
+      - $ref: '#/components/schemas/geofence_miles_delivery'
+      - $ref: '#/components/schemas/geofence_miles_pickup'
+    pickup_time:
+      type: string
+      example: '2022-02-25 02:25:00'
+      description: 'Send a value in this key only if you want to specify a pickup time.
+
+        - For future orders, the value should be at least two hours in the future (in the timezone of the pickup location).
+
+        - For immediate pickup, leave blank.
+
+        '
     shipment_viability:
       type: object
       properties:
@@ -4373,103 +4657,6 @@ components:
       - company
       - contact
       description: Destination address for order
-    pickup_address:
-      type: object
-      properties:
-        company:
-          type: string
-          example: TMB
-          description: Company name
-        street:
-          type: string
-          example: 151 N Main Street
-          description: Street address
-        street2:
-          type: string
-          example: ''
-          description: Additional street information
-        street3:
-          type: string
-          example: ''
-          description: Additional street information (only valid for non-US addresses)
-        city:
-          type: string
-          example: Sheridan
-          description: City
-        state:
-          type: string
-          example: WY
-          description: State
-        zip:
-          type: string
-          example: '82801'
-          description: Zip code
-        country:
-          type: string
-          example: US
-          description: ISO 3166-1 alpha-2 country abbreviation
-          enum:
-          - US
-          - CA
-          - AU
-          - GB
-          - DE
-          - BR
-          - FR
-          - JP
-          - RU
-          - IN
-          - ID
-          - IT
-          - ES
-          - MX
-          - 'NO'
-          - SE
-          - CO
-          - CN
-          - TR
-          - NZ
-        instructions:
-          type: string
-          example: 'Use Gate Code: B2578*. Park in rear by loading docks.'
-          description: Special instructions for the driver to execute at the address
-        contact:
-          $ref: '#/components/schemas/contact'
-        custom_attributes:
-          type: array
-          items:
-            $ref: '#/components/schemas/custom_attributes'
-          example:
-          - label: Requires Dock High?
-            option: true
-          - label: Requires Lift Gate?
-            option: 'true'
-          description: "Attributes are custom fields that will allow you to communicate specific requirements about your orders. They can be set up on Order level as well as on Address level. Additional charges may apply for some of the configured attributes, please clarify with your Account Manager.\n\nExamples:\n  - If you require ‘Airspace Protection Plan’ we can setup an order level custom attribute that will allow you to specify the dollar amount for the plan on the order.\n  - If a TSA Certified Driver is required by any of the address locations, an address level custom attribute will allow you to specify this request on the address.\n\nThis feature is only available if your account is configured for it. Please contact your Account Manager for details.\n"
-      required:
-      - street
-      - city
-      - company
-      - contact
-      description: Pickup address for order
-    reference:
-      type: object
-      properties:
-        reference:
-          type: string
-          example: PO-1234
-          description: Reference number or any additional identifying information
-        context:
-          type: string
-          example: PO number
-          description: 'Identifying name for the associated reference number.
-
-
-            Note: If you have a preconfigured custom reference, we will match the name to the context here. If the custom reference is a required field this value will become required.
-
-            '
-      required:
-      - reference
-      description: null
     order:
       type: object
       properties:
@@ -4578,134 +4765,85 @@ components:
       - pieces
       - references
       description: null
-    email_notification:
-      allOf:
-      - type: object
-        description: For each email notification a geofence trigger can be specified for distance from pickup or distance to delivery.
-        properties:
-          email:
-            type: string
-            example: alerts@airspace.com
-            description: Email address used to receive email notifications.
-          phone_number:
-            type:
-            - string
-            - integer
-            example: 619-867-5309
-            description: 'Phone number used to receive sms notifications (either string or integer).
-
-
-              Examples:
-
-              - 6198675309
-
-              - 619-867-5309
-
-              - (619)867-5309
-
-              - (619) 867-5309
-
-              - (619)-867-5309
-
-              '
-          exception_email:
-            type: boolean
-            example: true
-            description: Receive email notifications for exceptions.
-          statuses:
-            type: array
-            items:
-              type: string
-              enum:
-              - customer_completed
-              - ops_acknowledged
-              - auto_dispatch_started
-              - in_route_to_pickup
-              - arrived_at_pickup_location
-              - in_route_to_tender
-              - arrived_at_tender
-              - accepted_by_airline
-              - flight_departed
-              - flight_arrived
-              - reached_destination_airport
-              - in_route_to_recovery
-              - arrived_at_recovery_location
-              - recovered_from_airline
-              - in_route_to_destination
-              - arrived_at_destination
-              - package_accepted
-            description: Order statuses to receive updates for.
-            example:
-            - customer_completed
-            - ops_acknowledged
-            - auto_dispatch_started
-        required:
-        - email
-      oneOf:
-      - $ref: '#/components/schemas/geofence_miles_delivery'
-      - $ref: '#/components/schemas/geofence_miles_pickup'
-    contact:
+    pickup_address:
       type: object
       properties:
-        name:
+        company:
           type: string
-          example: Jenny Jenny
-          description: Contact name
-        phone_number:
-          type:
-          - string
-          - integer
-          example: 619-867-5309
-          description: 'Phone number (either string or integer).
-
-
-            Examples:
-
-            - 6198675309
-
-            - 619-867-5309
-
-            - (619)867-5309
-
-            - (619) 867-5309
-
-            - (619)-867-5309
-
-            '
-        phone_country_code:
+          example: TMB
+          description: Company name
+        street:
           type: string
-          example: '1'
-          description: International country code
+          example: 151 N Main Street
+          description: Street address
+        street2:
+          type: string
+          example: ''
+          description: Additional street information
+        street3:
+          type: string
+          example: ''
+          description: Additional street information (only valid for non-US addresses)
+        city:
+          type: string
+          example: Sheridan
+          description: City
+        state:
+          type: string
+          example: WY
+          description: State
+        zip:
+          type: string
+          example: '82801'
+          description: Zip code
+        country:
+          type: string
+          example: US
+          description: ISO 3166-1 alpha-2 country abbreviation
+          enum:
+          - US
+          - CA
+          - AU
+          - GB
+          - DE
+          - BR
+          - FR
+          - JP
+          - RU
+          - IN
+          - ID
+          - IT
+          - ES
+          - MX
+          - 'NO'
+          - SE
+          - CO
+          - CN
+          - TR
+          - NZ
+        instructions:
+          type: string
+          example: 'Use Gate Code: B2578*. Park in rear by loading docks.'
+          description: Special instructions for the driver to execute at the address
+        contact:
+          $ref: '#/components/schemas/contact'
+        custom_attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/custom_attributes'
+          example:
+          - label: Requires Dock High?
+            option: true
+          - label: Requires Lift Gate?
+            option: 'true'
+          description: "Attributes are custom fields that will allow you to communicate specific requirements about your orders. They can be set up on Order level as well as on Address level. Additional charges may apply for some of the configured attributes, please clarify with your Account Manager.\n\nExamples:\n  - If you require ‘Airspace Protection Plan’ we can setup an order level custom attribute that will allow you to specify the dollar amount for the plan on the order.\n  - If a TSA Certified Driver is required by any of the address locations, an address level custom attribute will allow you to specify this request on the address.\n\nThis feature is only available if your account is configured for it. Please contact your Account Manager for details.\n"
       required:
-      - name
-      - phone_number
-      description: Location contact
-    upid:
-      type: object
-      properties:
-        type:
-          type: string
-          example: 'PO #'
-          description: An identifier specified on the package to verify we are picking up the correct piece when an Airspace label is not used.
-        value:
-          type: string
-          example: PO-12345
-          description: The value of the specific identifier.
-      required:
-      - type
-      - value
-      description: An identifier specified on the package to verify we are picking up the correct piece when an Airspace label is not used.
-    pickup_time:
-      type: string
-      example: '2022-02-25 02:25:00'
-      description: 'Send a value in this key only if you want to specify a pickup time.
-
-        - For future orders, the value should be at least two hours in the future (in the timezone of the pickup location).
-
-        - For immediate pickup, leave blank.
-
-        '
-    piece:
+      - street
+      - city
+      - company
+      - contact
+      description: Pickup address for order
+    piece_2:
       type: object
       properties:
         piece_library_guid:
@@ -4717,20 +4855,24 @@ components:
           example: false
           description: Optional attribute to specify if a piece should not be rotated
         length:
-          type: string
-          example: '4'
+          type: number
+          format: float
+          example: 4.5
           description: Length of a piece
         width:
-          type: string
-          example: '4'
+          type: number
+          format: float
+          example: 4.5
           description: Width of a piece
         height:
-          type: string
-          example: '11'
+          type: number
+          format: float
+          example: 11.0
           description: Height of a piece
         weight:
-          type: string
-          example: '7'
+          type: number
+          format: float
+          example: 7.8
           description: Weight of a piece
         weight_unit:
           type: string
@@ -4789,59 +4931,6 @@ components:
       - weight_unit
       - dimension_unit
       - commodity
-      description: null
-    geofence_miles_pickup:
-      type: object
-      properties:
-        geofence_miles_pickup:
-          type: integer
-          example: 25
-          description: Mileage range to trigger notifications.
-      required: []
-      description: null
-    custom_attributes:
-      type: object
-      properties:
-        label:
-          type: string
-          description: Label for the custom attribute
-        option:
-          type:
-          - string
-          - boolean
-          description: 'Option for the custom attribute. Please contact your account manager for configured options.
-
-            '
-        weight:
-          type: float
-          description: Weight for the custom attribute
-        weight_unit:
-          type: string
-          description: Weight unit for the custom attribute. Will default to company configured weight unit if not provided.
-          enum:
-          - lbs
-          - kg
-        amount:
-          type: float
-          description: Amount for the custom attribute
-        currency_code:
-          type: string
-          description: Currency code for the custom attribute. Will default to company configured currency code if not provided.
-          enum:
-          - USD
-          - CAD
-          - EUR
-          - GBP
-          - AUD
-          - NZD
-          - CHF
-          - DKK
-          - NOK
-          - SEK
-          - SGD
-          - CNY
-      required:
-      - label
       description: null
     delivery_address:
       type: object
@@ -5007,95 +5096,6 @@ components:
       - company
       - contact
       description: Pickup address for order
-    piece_2:
-      type: object
-      properties:
-        piece_library_guid:
-          type: string
-          example: ATM94JAWEI
-          description: The GUID of a PieceLibrary record from which to optionally pull stored piece attributes.
-        do_not_rotate:
-          type: boolean
-          example: false
-          description: Optional attribute to specify if a piece should not be rotated
-        length:
-          type: number
-          format: float
-          example: 4.5
-          description: Length of a piece
-        width:
-          type: number
-          format: float
-          example: 4.5
-          description: Width of a piece
-        height:
-          type: number
-          format: float
-          example: 11.0
-          description: Height of a piece
-        weight:
-          type: number
-          format: float
-          example: 7.8
-          description: Weight of a piece
-        weight_unit:
-          type: string
-          example: lbs
-          description: Weight unit
-          enum:
-          - lb
-          - kg
-        dimension_unit:
-          type: string
-          example: in
-          description: Dimension unit
-          enum:
-          - in
-          - cm
-        commodity:
-          type: string
-          example: Test commodity
-          description: The item or material to be transported. Please check with your account management representative for a full list.
-        upids:
-          type: array
-          items:
-            $ref: '#/components/schemas/upid'
-          description: 'UPIDs, or Unique Piece Identifiers, are mainly used to identify the pieces when there is no shipping label on them.
-
-            They can also be used for pieces with non-Airspace labels. A single piece can have multiple UPIDs.
-
-
-            Please check with your account management representative to know more.
-
-            '
-        barcode:
-          type: string
-          example: '1234567890'
-          description: Barcode value of a piece.
-        barcode_type:
-          type: string
-          example: code_128
-          description: Barcode type of a piece.
-          enum:
-          - upc_e
-          - ean_13
-          - ean_8
-          - code_39
-          - code_93
-          - code_128
-          - itf
-          - qr
-          - data_matrix
-          - pdf_417
-      required:
-      - height
-      - length
-      - width
-      - weight
-      - weight_unit
-      - dimension_unit
-      - commodity
-      description: null
   securitySchemes:
     Bearer:
       description: Unique API key necessary to make API requests.
