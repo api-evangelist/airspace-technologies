@@ -558,6 +558,42 @@ paths:
                     viable_until: '2024-07-13T16:46:00.000Z'
 components:
   schemas:
+    contact:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Jenny Jenny
+          description: Contact name
+        phone_number:
+          type:
+          - string
+          - integer
+          example: 619-867-5309
+          description: 'Phone number (either string or integer).
+
+
+            Examples:
+
+            - 6198675309
+
+            - 619-867-5309
+
+            - (619)867-5309
+
+            - (619) 867-5309
+
+            - (619)-867-5309
+
+            '
+        phone_country_code:
+          type: string
+          example: '1'
+          description: International country code
+      required:
+      - name
+      - phone_number
+      description: Location contact
     piece:
       type: object
       properties:
@@ -751,21 +787,6 @@ components:
       - pieces
       - references
       description: null
-    upid:
-      type: object
-      properties:
-        type:
-          type: string
-          example: 'PO #'
-          description: An identifier specified on the package to verify we are picking up the correct piece when an Airspace label is not used.
-        value:
-          type: string
-          example: PO-12345
-          description: The value of the specific identifier.
-      required:
-      - type
-      - value
-      description: An identifier specified on the package to verify we are picking up the correct piece when an Airspace label is not used.
     geofence_miles_pickup:
       type: object
       properties:
@@ -774,70 +795,6 @@ components:
           example: 25
           description: Mileage range to trigger notifications.
       required: []
-      description: null
-    geofence_miles_delivery:
-      type: object
-      properties:
-        geofence_miles_delivery:
-          type: integer
-          example: 10
-          description: Mileage range to trigger notifications.
-      required: []
-      description: null
-    contact:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Jenny Jenny
-          description: Contact name
-        phone_number:
-          type:
-          - string
-          - integer
-          example: 619-867-5309
-          description: 'Phone number (either string or integer).
-
-
-            Examples:
-
-            - 6198675309
-
-            - 619-867-5309
-
-            - (619)867-5309
-
-            - (619) 867-5309
-
-            - (619)-867-5309
-
-            '
-        phone_country_code:
-          type: string
-          example: '1'
-          description: International country code
-      required:
-      - name
-      - phone_number
-      description: Location contact
-    reference:
-      type: object
-      properties:
-        reference:
-          type: string
-          example: PO-1234
-          description: Reference number or any additional identifying information
-        context:
-          type: string
-          example: PO number
-          description: 'Identifying name for the associated reference number.
-
-
-            Note: If you have a preconfigured custom reference, we will match the name to the context here. If the custom reference is a required field this value will become required.
-
-            '
-      required:
-      - reference
       description: null
     custom_attributes:
       type: object
@@ -911,16 +868,108 @@ components:
         configured for it. Please contact your Account Manager for details.
 
         '
-    pickup_time:
-      type: string
-      example: '2022-02-25 02:25:00'
-      description: 'Send a value in this key only if you want to specify a pickup time.
-
-        - For future orders, the value should be at least two hours in the future (in the timezone of the pickup location).
-
-        - For immediate pickup, leave blank.
-
-        '
+    geofence_miles_delivery:
+      type: object
+      properties:
+        geofence_miles_delivery:
+          type: integer
+          example: 10
+          description: Mileage range to trigger notifications.
+      required: []
+      description: null
+    upid:
+      type: object
+      properties:
+        type:
+          type: string
+          example: 'PO #'
+          description: An identifier specified on the package to verify we are picking up the correct piece when an Airspace label is not used.
+        value:
+          type: string
+          example: PO-12345
+          description: The value of the specific identifier.
+      required:
+      - type
+      - value
+      description: An identifier specified on the package to verify we are picking up the correct piece when an Airspace label is not used.
+    pickup_address:
+      type: object
+      properties:
+        company:
+          type: string
+          example: TMB
+          description: Company name
+        street:
+          type: string
+          example: 151 N Main Street
+          description: Street address
+        street2:
+          type: string
+          example: ''
+          description: Additional street information
+        street3:
+          type: string
+          example: ''
+          description: Additional street information (only valid for non-US addresses)
+        city:
+          type: string
+          example: Sheridan
+          description: City
+        state:
+          type: string
+          example: WY
+          description: State
+        zip:
+          type: string
+          example: '82801'
+          description: Zip code
+        country:
+          type: string
+          example: US
+          description: ISO 3166-1 alpha-2 country abbreviation
+          enum:
+          - US
+          - CA
+          - AU
+          - GB
+          - DE
+          - BR
+          - FR
+          - JP
+          - RU
+          - IN
+          - ID
+          - IT
+          - ES
+          - MX
+          - 'NO'
+          - SE
+          - CO
+          - CN
+          - TR
+          - NZ
+        instructions:
+          type: string
+          example: 'Use Gate Code: B2578*. Park in rear by loading docks.'
+          description: Special instructions for the driver to execute at the address
+        contact:
+          $ref: '#/components/schemas/contact'
+        custom_attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/custom_attributes'
+          example:
+          - label: Requires Dock High?
+            option: true
+          - label: Requires Lift Gate?
+            option: 'true'
+          description: "Attributes are custom fields that will allow you to communicate specific requirements about your orders. They can be set up on Order level as well as on Address level. Additional charges may apply for some of the configured attributes, please clarify with your Account Manager.\n\nExamples:\n  - If you require ‘Airspace Protection Plan’ we can setup an order level custom attribute that will allow you to specify the dollar amount for the plan on the order.\n  - If a TSA Certified Driver is required by any of the address locations, an address level custom attribute will allow you to specify this request on the address.\n\nThis feature is only available if your account is configured for it. Please contact your Account Manager for details.\n"
+      required:
+      - street
+      - city
+      - company
+      - contact
+      description: Pickup address for order
     email_notification:
       allOf:
       - type: object
@@ -1065,84 +1114,35 @@ components:
       - company
       - contact
       description: Destination address for order
-    pickup_address:
+    reference:
       type: object
       properties:
-        company:
+        reference:
           type: string
-          example: TMB
-          description: Company name
-        street:
+          example: PO-1234
+          description: Reference number or any additional identifying information
+        context:
           type: string
-          example: 151 N Main Street
-          description: Street address
-        street2:
-          type: string
-          example: ''
-          description: Additional street information
-        street3:
-          type: string
-          example: ''
-          description: Additional street information (only valid for non-US addresses)
-        city:
-          type: string
-          example: Sheridan
-          description: City
-        state:
-          type: string
-          example: WY
-          description: State
-        zip:
-          type: string
-          example: '82801'
-          description: Zip code
-        country:
-          type: string
-          example: US
-          description: ISO 3166-1 alpha-2 country abbreviation
-          enum:
-          - US
-          - CA
-          - AU
-          - GB
-          - DE
-          - BR
-          - FR
-          - JP
-          - RU
-          - IN
-          - ID
-          - IT
-          - ES
-          - MX
-          - 'NO'
-          - SE
-          - CO
-          - CN
-          - TR
-          - NZ
-        instructions:
-          type: string
-          example: 'Use Gate Code: B2578*. Park in rear by loading docks.'
-          description: Special instructions for the driver to execute at the address
-        contact:
-          $ref: '#/components/schemas/contact'
-        custom_attributes:
-          type: array
-          items:
-            $ref: '#/components/schemas/custom_attributes'
-          example:
-          - label: Requires Dock High?
-            option: true
-          - label: Requires Lift Gate?
-            option: 'true'
-          description: "Attributes are custom fields that will allow you to communicate specific requirements about your orders. They can be set up on Order level as well as on Address level. Additional charges may apply for some of the configured attributes, please clarify with your Account Manager.\n\nExamples:\n  - If you require ‘Airspace Protection Plan’ we can setup an order level custom attribute that will allow you to specify the dollar amount for the plan on the order.\n  - If a TSA Certified Driver is required by any of the address locations, an address level custom attribute will allow you to specify this request on the address.\n\nThis feature is only available if your account is configured for it. Please contact your Account Manager for details.\n"
+          example: PO number
+          description: 'Identifying name for the associated reference number.
+
+
+            Note: If you have a preconfigured custom reference, we will match the name to the context here. If the custom reference is a required field this value will become required.
+
+            '
       required:
-      - street
-      - city
-      - company
-      - contact
-      description: Pickup address for order
+      - reference
+      description: null
+    pickup_time:
+      type: string
+      example: '2022-02-25 02:25:00'
+      description: 'Send a value in this key only if you want to specify a pickup time.
+
+        - For future orders, the value should be at least two hours in the future (in the timezone of the pickup location).
+
+        - For immediate pickup, leave blank.
+
+        '
   securitySchemes:
     Bearer:
       description: Unique API key necessary to make API requests.
