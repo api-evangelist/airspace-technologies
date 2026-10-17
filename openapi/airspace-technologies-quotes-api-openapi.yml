@@ -558,6 +558,307 @@ paths:
                     viable_until: '2024-07-13T16:46:00.000Z'
 components:
   schemas:
+    reference:
+      type: object
+      properties:
+        reference:
+          type: string
+          example: PO-1234
+          description: Reference number or any additional identifying information
+        context:
+          type: string
+          example: PO number
+          description: 'Identifying name for the associated reference number.
+
+
+            Note: If you have a preconfigured custom reference, we will match the name to the context here. If the custom reference is a required field this value will become required.
+
+            '
+      required:
+      - reference
+      description: null
+    quote:
+      type: object
+      properties:
+        company_id:
+          type: string
+          example: ATG1U2I3D4
+          description: Optional Company ID of a child company that will be used to create an Order
+        pickup_time:
+          $ref: '#/components/schemas/pickup_time'
+        pickup_address:
+          $ref: '#/components/schemas/pickup_address'
+        destination_address:
+          $ref: '#/components/schemas/destination_address'
+        references:
+          type: array
+          items:
+            $ref: '#/components/schemas/reference'
+          description: 'References can contain any additional identifying or related information about the piece(s) or the order.
+
+
+            Some references may be required for your account. Please check with your account management representative to know more.
+
+            '
+        pieces:
+          type: array
+          items:
+            $ref: '#/components/schemas/piece'
+          description: Pieces in order
+        service_type:
+          type: string
+          example: recommended
+          default: optimize_for_time
+          description: 'Requested delivery type.
+
+            - recommended - Route is selected based on your unique preferences and history.
+
+            - optimize_for_time - Route with fastest delivery time is prioritized over cost.
+
+            - optimize_for_cost - Most economical route prioritizes cost over delivery time.
+
+            - optimize_for_green - Route is selected based on environmental impact.
+
+            - drive_only - A drive only route which is adjusted for real time traffic and weather conditions.
+
+            '
+          enum:
+          - recommended
+          - optimize_for_time
+          - optimize_for_cost
+          - drive_only
+          - optimize_for_green
+        should_hold_at_airlines:
+          type: boolean
+          example: false
+          default: false
+          description: Hold the package for pickup at the airline
+        has_dangerous_goods:
+          type: boolean
+          example: false
+          default: false
+          description: Contains hazardous or dangerous goods
+        email_notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/email_notification'
+          description: Receive notifications with updates for this order
+        airtrace_assignment_override:
+          type: boolean
+          example: false
+          description: Override tracker assignment. If you try to assign an AirTrace Tacker to an order that already has it assigned, you may see an error. You may override this assignment if you have API access to this order. If the value is true, the AirTrace tracker will be removed from tracking its current assigned order. By continuing, you are acknowledging that you understand the risks. See [AirTrace](https://www.airspace.com/airtrace) for more information.
+        required_vehicle_type:
+          type: string
+          example: van
+          enum:
+          - car
+          - van
+          - truck
+          - flatbed
+          description: 'Choose a vehicle for your order
+
+            - This feature is only available if your account is configured for it. Please contact your account manager for details.
+
+            - If a bigger vehicle type value is sent than required, additional charges may apply.
+
+            - If a smaller vehicle type value is sent, we will override with system determined vehicle based on piece count, dimensions and weight.
+
+            '
+        custom_attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/custom_attributes'
+          example:
+          - label: I'd like to add Airspace Protection Plan to my order
+            amount: 123.5
+            currency_code: USD
+          - label: Requires Dry Ice?
+            option: Customer requests dry ice block from Airspace
+            weight: 10
+            weight_unit: lbs
+          description: "Attributes are custom fields that will allow you to communicate specific requirements about your orders. They can be set up on Order level as well as on Address level. Additional charges may apply for some of the configured attributes, please clarify with your Account Manager.\n\nExamples:\n  - If you require ‘Airspace Protection Plan’ we can setup an order level custom attribute that will allow you to specify the dollar amount for the plan on the order.\n  - If a TSA Certified Driver is required by any of the address locations, an address level custom attribute will allow you to specify this request on the address.\n\nThis feature is only available if your account is configured for it. Please contact your Account Manager for details.\n"
+        shipment_viability:
+          $ref: '#/components/schemas/shipment_viability'
+      required:
+      - destination_address
+      - pickup_address
+      - pieces
+      - references
+      description: null
+    geofence_miles_delivery:
+      type: object
+      properties:
+        geofence_miles_delivery:
+          type: integer
+          example: 10
+          description: Mileage range to trigger notifications.
+      required: []
+      description: null
+    upid:
+      type: object
+      properties:
+        type:
+          type: string
+          example: 'PO #'
+          description: An identifier specified on the package to verify we are picking up the correct piece when an Airspace label is not used.
+        value:
+          type: string
+          example: PO-12345
+          description: The value of the specific identifier.
+      required:
+      - type
+      - value
+      description: An identifier specified on the package to verify we are picking up the correct piece when an Airspace label is not used.
+    custom_attributes:
+      type: object
+      properties:
+        label:
+          type: string
+          description: Label for the custom attribute
+        option:
+          type:
+          - string
+          - boolean
+          description: 'Option for the custom attribute. Please contact your account manager for configured options.
+
+            '
+        weight:
+          type: float
+          description: Weight for the custom attribute
+        weight_unit:
+          type: string
+          description: Weight unit for the custom attribute. Will default to company configured weight unit if not provided.
+          enum:
+          - lbs
+          - kg
+        amount:
+          type: float
+          description: Amount for the custom attribute
+        currency_code:
+          type: string
+          description: Currency code for the custom attribute. Will default to company configured currency code if not provided.
+          enum:
+          - USD
+          - CAD
+          - EUR
+          - GBP
+          - AUD
+          - NZD
+          - CHF
+          - DKK
+          - NOK
+          - SEK
+          - SGD
+          - CNY
+      required:
+      - label
+      description: null
+    pickup_address:
+      type: object
+      properties:
+        company:
+          type: string
+          example: TMB
+          description: Company name
+        street:
+          type: string
+          example: 151 N Main Street
+          description: Street address
+        street2:
+          type: string
+          example: ''
+          description: Additional street information
+        street3:
+          type: string
+          example: ''
+          description: Additional street information (only valid for non-US addresses)
+        city:
+          type: string
+          example: Sheridan
+          description: City
+        state:
+          type: string
+          example: WY
+          description: State
+        zip:
+          type: string
+          example: '82801'
+          description: Zip code
+        country:
+          type: string
+          example: US
+          description: ISO 3166-1 alpha-2 country abbreviation
+          enum:
+          - US
+          - CA
+          - AU
+          - GB
+          - DE
+          - BR
+          - FR
+          - JP
+          - RU
+          - IN
+          - ID
+          - IT
+          - ES
+          - MX
+          - 'NO'
+          - SE
+          - CO
+          - CN
+          - TR
+          - NZ
+        instructions:
+          type: string
+          example: 'Use Gate Code: B2578*. Park in rear by loading docks.'
+          description: Special instructions for the driver to execute at the address
+        contact:
+          $ref: '#/components/schemas/contact'
+        custom_attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/custom_attributes'
+          example:
+          - label: Requires Dock High?
+            option: true
+          - label: Requires Lift Gate?
+            option: 'true'
+          description: "Attributes are custom fields that will allow you to communicate specific requirements about your orders. They can be set up on Order level as well as on Address level. Additional charges may apply for some of the configured attributes, please clarify with your Account Manager.\n\nExamples:\n  - If you require ‘Airspace Protection Plan’ we can setup an order level custom attribute that will allow you to specify the dollar amount for the plan on the order.\n  - If a TSA Certified Driver is required by any of the address locations, an address level custom attribute will allow you to specify this request on the address.\n\nThis feature is only available if your account is configured for it. Please contact your Account Manager for details.\n"
+      required:
+      - street
+      - city
+      - company
+      - contact
+      description: Pickup address for order
+    shipment_viability:
+      type: object
+      properties:
+        started_at:
+          type: string
+          example: 2024-07-10 09:46:00 -0700
+          description: 'The start time for the shipment’s viability. If timezone is not provided, the pickup address timezone
+
+            is assumed.
+
+            '
+        duration:
+          type: integer
+          example: 72
+          description: 'Viability duration of the shipment in hours. If not provided, the default value on the account
+
+            configuration will be used.
+
+            '
+      required:
+      - started_at
+      description: 'Viability window for a shipment. This is the time period for which the shipment is viable and we best
+
+        ensure for it to be delivered prior to its expiration. This feature is only available if your account is
+
+        configured for it. Please contact your Account Manager for details.
+
+        '
     destination_address:
       type: object
       properties:
@@ -672,15 +973,82 @@ components:
       - name
       - phone_number
       description: Location contact
-    geofence_miles_pickup:
-      type: object
-      properties:
-        geofence_miles_pickup:
-          type: integer
-          example: 25
-          description: Mileage range to trigger notifications.
-      required: []
-      description: null
+    pickup_time:
+      type: string
+      example: '2022-02-25 02:25:00'
+      description: 'Send a value in this key only if you want to specify a pickup time.
+
+        - For future orders, the value should be at least two hours in the future (in the timezone of the pickup location).
+
+        - For immediate pickup, leave blank.
+
+        '
+    email_notification:
+      allOf:
+      - type: object
+        description: For each email notification a geofence trigger can be specified for distance from pickup or distance to delivery.
+        properties:
+          email:
+            type: string
+            example: alerts@airspace.com
+            description: Email address used to receive email notifications.
+          phone_number:
+            type:
+            - string
+            - integer
+            example: 619-867-5309
+            description: 'Phone number used to receive sms notifications (either string or integer).
+
+
+              Examples:
+
+              - 6198675309
+
+              - 619-867-5309
+
+              - (619)867-5309
+
+              - (619) 867-5309
+
+              - (619)-867-5309
+
+              '
+          exception_email:
+            type: boolean
+            example: true
+            description: Receive email notifications for exceptions.
+          statuses:
+            type: array
+            items:
+              type: string
+              enum:
+              - customer_completed
+              - ops_acknowledged
+              - auto_dispatch_started
+              - in_route_to_pickup
+              - arrived_at_pickup_location
+              - in_route_to_tender
+              - arrived_at_tender
+              - accepted_by_airline
+              - flight_departed
+              - flight_arrived
+              - reached_destination_airport
+              - in_route_to_recovery
+              - arrived_at_recovery_location
+              - recovered_from_airline
+              - in_route_to_destination
+              - arrived_at_destination
+              - package_accepted
+            description: Order statuses to receive updates for.
+            example:
+            - customer_completed
+            - ops_acknowledged
+            - auto_dispatch_started
+        required:
+        - email
+      oneOf:
+      - $ref: '#/components/schemas/geofence_miles_delivery'
+      - $ref: '#/components/schemas/geofence_miles_pickup'
     piece:
       type: object
       properties:
@@ -766,383 +1134,15 @@ components:
       - dimension_unit
       - commodity
       description: null
-    reference:
+    geofence_miles_pickup:
       type: object
       properties:
-        reference:
-          type: string
-          example: PO-1234
-          description: Reference number or any additional identifying information
-        context:
-          type: string
-          example: PO number
-          description: 'Identifying name for the associated reference number.
-
-
-            Note: If you have a preconfigured custom reference, we will match the name to the context here. If the custom reference is a required field this value will become required.
-
-            '
-      required:
-      - reference
-      description: null
-    email_notification:
-      allOf:
-      - type: object
-        description: For each email notification a geofence trigger can be specified for distance from pickup or distance to delivery.
-        properties:
-          email:
-            type: string
-            example: alerts@airspace.com
-            description: Email address used to receive email notifications.
-          phone_number:
-            type:
-            - string
-            - integer
-            example: 619-867-5309
-            description: 'Phone number used to receive sms notifications (either string or integer).
-
-
-              Examples:
-
-              - 6198675309
-
-              - 619-867-5309
-
-              - (619)867-5309
-
-              - (619) 867-5309
-
-              - (619)-867-5309
-
-              '
-          exception_email:
-            type: boolean
-            example: true
-            description: Receive email notifications for exceptions.
-          statuses:
-            type: array
-            items:
-              type: string
-              enum:
-              - customer_completed
-              - ops_acknowledged
-              - auto_dispatch_started
-              - in_route_to_pickup
-              - arrived_at_pickup_location
-              - in_route_to_tender
-              - arrived_at_tender
-              - accepted_by_airline
-              - flight_departed
-              - flight_arrived
-              - reached_destination_airport
-              - in_route_to_recovery
-              - arrived_at_recovery_location
-              - recovered_from_airline
-              - in_route_to_destination
-              - arrived_at_destination
-              - package_accepted
-            description: Order statuses to receive updates for.
-            example:
-            - customer_completed
-            - ops_acknowledged
-            - auto_dispatch_started
-        required:
-        - email
-      oneOf:
-      - $ref: '#/components/schemas/geofence_miles_delivery'
-      - $ref: '#/components/schemas/geofence_miles_pickup'
-    custom_attributes:
-      type: object
-      properties:
-        label:
-          type: string
-          description: Label for the custom attribute
-        option:
-          type:
-          - string
-          - boolean
-          description: 'Option for the custom attribute. Please contact your account manager for configured options.
-
-            '
-        weight:
-          type: float
-          description: Weight for the custom attribute
-        weight_unit:
-          type: string
-          description: Weight unit for the custom attribute. Will default to company configured weight unit if not provided.
-          enum:
-          - lbs
-          - kg
-        amount:
-          type: float
-          description: Amount for the custom attribute
-        currency_code:
-          type: string
-          description: Currency code for the custom attribute. Will default to company configured currency code if not provided.
-          enum:
-          - USD
-          - CAD
-          - EUR
-          - GBP
-          - AUD
-          - NZD
-          - CHF
-          - DKK
-          - NOK
-          - SEK
-          - SGD
-          - CNY
-      required:
-      - label
-      description: null
-    quote:
-      type: object
-      properties:
-        company_id:
-          type: string
-          example: ATG1U2I3D4
-          description: Optional Company ID of a child company that will be used to create an Order
-        pickup_time:
-          $ref: '#/components/schemas/pickup_time'
-        pickup_address:
-          $ref: '#/components/schemas/pickup_address'
-        destination_address:
-          $ref: '#/components/schemas/destination_address'
-        references:
-          type: array
-          items:
-            $ref: '#/components/schemas/reference'
-          description: 'References can contain any additional identifying or related information about the piece(s) or the order.
-
-
-            Some references may be required for your account. Please check with your account management representative to know more.
-
-            '
-        pieces:
-          type: array
-          items:
-            $ref: '#/components/schemas/piece'
-          description: Pieces in order
-        service_type:
-          type: string
-          example: recommended
-          default: optimize_for_time
-          description: 'Requested delivery type.
-
-            - recommended - Route is selected based on your unique preferences and history.
-
-            - optimize_for_time - Route with fastest delivery time is prioritized over cost.
-
-            - optimize_for_cost - Most economical route prioritizes cost over delivery time.
-
-            - optimize_for_green - Route is selected based on environmental impact.
-
-            - drive_only - A drive only route which is adjusted for real time traffic and weather conditions.
-
-            '
-          enum:
-          - recommended
-          - optimize_for_time
-          - optimize_for_cost
-          - drive_only
-          - optimize_for_green
-        should_hold_at_airlines:
-          type: boolean
-          example: false
-          default: false
-          description: Hold the package for pickup at the airline
-        has_dangerous_goods:
-          type: boolean
-          example: false
-          default: false
-          description: Contains hazardous or dangerous goods
-        email_notifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/email_notification'
-          description: Receive notifications with updates for this order
-        airtrace_assignment_override:
-          type: boolean
-          example: false
-          description: Override tracker assignment. If you try to assign an AirTrace Tacker to an order that already has it assigned, you may see an error. You may override this assignment if you have API access to this order. If the value is true, the AirTrace tracker will be removed from tracking its current assigned order. By continuing, you are acknowledging that you understand the risks. See [AirTrace](https://www.airspace.com/airtrace) for more information.
-        required_vehicle_type:
-          type: string
-          example: van
-          enum:
-          - car
-          - van
-          - truck
-          - flatbed
-          description: 'Choose a vehicle for your order
-
-            - This feature is only available if your account is configured for it. Please contact your account manager for details.
-
-            - If a bigger vehicle type value is sent than required, additional charges may apply.
-
-            - If a smaller vehicle type value is sent, we will override with system determined vehicle based on piece count, dimensions and weight.
-
-            '
-        custom_attributes:
-          type: array
-          items:
-            $ref: '#/components/schemas/custom_attributes'
-          example:
-          - label: I'd like to add Airspace Protection Plan to my order
-            amount: 123.5
-            currency_code: USD
-          - label: Requires Dry Ice?
-            option: Customer requests dry ice block from Airspace
-            weight: 10
-            weight_unit: lbs
-          description: "Attributes are custom fields that will allow you to communicate specific requirements about your orders. They can be set up on Order level as well as on Address level. Additional charges may apply for some of the configured attributes, please clarify with your Account Manager.\n\nExamples:\n  - If you require ‘Airspace Protection Plan’ we can setup an order level custom attribute that will allow you to specify the dollar amount for the plan on the order.\n  - If a TSA Certified Driver is required by any of the address locations, an address level custom attribute will allow you to specify this request on the address.\n\nThis feature is only available if your account is configured for it. Please contact your Account Manager for details.\n"
-        shipment_viability:
-          $ref: '#/components/schemas/shipment_viability'
-      required:
-      - destination_address
-      - pickup_address
-      - pieces
-      - references
-      description: null
-    pickup_time:
-      type: string
-      example: '2022-02-25 02:25:00'
-      description: 'Send a value in this key only if you want to specify a pickup time.
-
-        - For future orders, the value should be at least two hours in the future (in the timezone of the pickup location).
-
-        - For immediate pickup, leave blank.
-
-        '
-    geofence_miles_delivery:
-      type: object
-      properties:
-        geofence_miles_delivery:
+        geofence_miles_pickup:
           type: integer
-          example: 10
+          example: 25
           description: Mileage range to trigger notifications.
       required: []
       description: null
-    shipment_viability:
-      type: object
-      properties:
-        started_at:
-          type: string
-          example: 2024-07-10 09:46:00 -0700
-          description: 'The start time for the shipment’s viability. If timezone is not provided, the pickup address timezone
-
-            is assumed.
-
-            '
-        duration:
-          type: integer
-          example: 72
-          description: 'Viability duration of the shipment in hours. If not provided, the default value on the account
-
-            configuration will be used.
-
-            '
-      required:
-      - started_at
-      description: 'Viability window for a shipment. This is the time period for which the shipment is viable and we best
-
-        ensure for it to be delivered prior to its expiration. This feature is only available if your account is
-
-        configured for it. Please contact your Account Manager for details.
-
-        '
-    upid:
-      type: object
-      properties:
-        type:
-          type: string
-          example: 'PO #'
-          description: An identifier specified on the package to verify we are picking up the correct piece when an Airspace label is not used.
-        value:
-          type: string
-          example: PO-12345
-          description: The value of the specific identifier.
-      required:
-      - type
-      - value
-      description: An identifier specified on the package to verify we are picking up the correct piece when an Airspace label is not used.
-    pickup_address:
-      type: object
-      properties:
-        company:
-          type: string
-          example: TMB
-          description: Company name
-        street:
-          type: string
-          example: 151 N Main Street
-          description: Street address
-        street2:
-          type: string
-          example: ''
-          description: Additional street information
-        street3:
-          type: string
-          example: ''
-          description: Additional street information (only valid for non-US addresses)
-        city:
-          type: string
-          example: Sheridan
-          description: City
-        state:
-          type: string
-          example: WY
-          description: State
-        zip:
-          type: string
-          example: '82801'
-          description: Zip code
-        country:
-          type: string
-          example: US
-          description: ISO 3166-1 alpha-2 country abbreviation
-          enum:
-          - US
-          - CA
-          - AU
-          - GB
-          - DE
-          - BR
-          - FR
-          - JP
-          - RU
-          - IN
-          - ID
-          - IT
-          - ES
-          - MX
-          - 'NO'
-          - SE
-          - CO
-          - CN
-          - TR
-          - NZ
-        instructions:
-          type: string
-          example: 'Use Gate Code: B2578*. Park in rear by loading docks.'
-          description: Special instructions for the driver to execute at the address
-        contact:
-          $ref: '#/components/schemas/contact'
-        custom_attributes:
-          type: array
-          items:
-            $ref: '#/components/schemas/custom_attributes'
-          example:
-          - label: Requires Dock High?
-            option: true
-          - label: Requires Lift Gate?
-            option: 'true'
-          description: "Attributes are custom fields that will allow you to communicate specific requirements about your orders. They can be set up on Order level as well as on Address level. Additional charges may apply for some of the configured attributes, please clarify with your Account Manager.\n\nExamples:\n  - If you require ‘Airspace Protection Plan’ we can setup an order level custom attribute that will allow you to specify the dollar amount for the plan on the order.\n  - If a TSA Certified Driver is required by any of the address locations, an address level custom attribute will allow you to specify this request on the address.\n\nThis feature is only available if your account is configured for it. Please contact your Account Manager for details.\n"
-      required:
-      - street
-      - city
-      - company
-      - contact
-      description: Pickup address for order
   securitySchemes:
     Bearer:
       description: Unique API key necessary to make API requests.
