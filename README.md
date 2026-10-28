@@ -64,6 +64,135 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Airspace Technologies is a company surfaced as a portfolio company of scale-venture-partners and added to the API Evangelist network as a stub for enrichment. Sector: logistics. This profile is a lead awaiting the enrichment pipeline.
+Airspace Technologies is a time-critical logistics provider that uses AI-driven routing to move urgent, high-value freight via Next Flight Out (NFO), on-demand ground, charter, and specialty services across 80+ countries. Its public REST API (current V3, prior V2) supports order creation, quote generation, and active shipment monitoring. The API is asynchronous, authenticates with a non-expiring bearer token, paginates lists with page/page_limit, and pushes milestone, delay, and cancellation updates over webhooks correlated by request_id.
 
-Backed by: scale-venture-partners — https://www.airspace.com/
+**Areas:** Company · Logistics · Shipping · Freight · Supply Chain · Transportation · Webhook · Order
+
+## Airspace Technologies on APIs.io
+
+Everything profiled for Airspace Technologies is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/airspace-technologies/](https://apis.io/providers/airspace-technologies/)** — or go straight to one of the APIs or properties below.
+
+### APIs (6)
+
+- [Airspace Technologies Address Books API](https://apis.io/apis/airspace-technologies/airspace-technologies-address-books-api/) — We support listing reusable address entries.
+- [Airspace Technologies Invoices API](https://apis.io/apis/airspace-technologies/airspace-technologies-invoices-api/) — We support listing invoices for Orders. Please reach out to account manager for setup
+- [Airspace Technologies Labels API](https://apis.io/apis/airspace-technologies/airspace-technologies-labels-api/) — We support generating labels for Orders.
+- [Airspace Technologies Orders API](https://apis.io/apis/airspace-technologies/airspace-technologies-orders-api/) — We support order creation, updates, cancellation, information, and document upload.
+- [Airspace Technologies Piece Libraries API](https://apis.io/apis/airspace-technologies/airspace-technologies-piece-libraries-api/) — We support listing reusable piece entries.
+- [Airspace Technologies Quotes API](https://apis.io/apis/airspace-technologies/airspace-technologies-quotes-api/) — We support generating a Quote for a potential Order as well as confirming that Quote to place an Order.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Airspace Technologies Webhooks](https://apis.io/asyncapis/airspace-technologies/airspace-technologies-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [airspace-technologies](https://apis.io/servers/airspace-technologies/airspace-technologies/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Airspace Technologies Agentic Access](https://apis.io/agentic-access/airspace-technologies/airspace-technologies-agentic-access/)
+
+#### Collections (6)
+
+Postman and Open Collection request collections.
+
+- [Airspace API Documentation Address Books API](https://apis.io/collections/airspace-technologies/open-airspace-technologies-address-books-api/)
+- [Airspace API Documentation Address Books Invoices API](https://apis.io/collections/airspace-technologies/open-airspace-technologies-invoices-api/)
+- [Airspace API Documentation Address Books Labels API](https://apis.io/collections/airspace-technologies/open-airspace-technologies-labels-api/)
+- [Airspace API Documentation Address Books Orders API](https://apis.io/collections/airspace-technologies/open-airspace-technologies-orders-api/)
+- [Airspace API Documentation Address Books Piece Libraries API](https://apis.io/collections/airspace-technologies/open-airspace-technologies-piece-libraries-api/)
+- [Airspace API Documentation Address Books Quotes API](https://apis.io/collections/airspace-technologies/open-airspace-technologies-quotes-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Airspace Technologies V3 Overlay](https://apis.io/overlays/airspace-technologies/airspace-technologies-v3-overlay/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Airspace Technologies Authentication](https://apis.io/security/airspace-technologies/airspace-technologies-authentication/)
+- [Airspace Technologies Domain Security](https://apis.io/security/airspace-technologies/airspace-technologies-domain-security/)
+- [Airspace Technologies Trust Center](https://apis.io/security/airspace-technologies/airspace-technologies-trust-center/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.airspace.com/)
+- [Documentation](https://api.airspace.com/api-docs/)
+- [Getting started](https://api.airspace.com/api-docs/v3)
+- [API reference](https://api.airspace.com/api-docs/v3)
+- [Support](https://www.airspace.com/contact-us)
+- [Compliance](https://trust.airspace.com/)
+- [Privacy policy](https://www.airspace.com/privacy-policy)
+- [GitHub](https://github.com/AirspaceTechnologies)
+- [Status](https://airspace.statuspage.io)
+
+## API Evangelist rating
+
+**Kin Score 48.3** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 60.7 |
+| Contract governance | 18.2 |
+| Operational transparency | 26.3 |
+| Developer ergonomics | 63.7 |
+| Access clarity | 32.9 |
+
+**Agent readiness 31.4** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | — |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 25.5** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/airspace-technologies/](https://apis.io/providers/airspace-technologies/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Airspace Technologies: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/airspace-technologies/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
